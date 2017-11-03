@@ -3,20 +3,25 @@
 ###
 [Aa]ssets/AssetStoreTools*
 [Bb]uild/
+[Bb]uilds/
 [Ll]ibrary/
 [Ll]ocal[Cc]ache/
 [Oo]bj/
 [Tt]emp/
 [Uu]nityGenerated/
+
 # file on crash reports
 sysinfo.txt
+
 # Unity3D generated meta files
+*.pidb
 *.pidb.meta
 
 ###
 # VS/MD solution and project files
 ###
 [Ee]xportedObj/
+.consulo/
 *.booproj
 *.csproj
 *.sln
@@ -25,8 +30,7 @@ sysinfo.txt
 *.unityproj
 *.user
 *.userprefs
-*.pidb
-.DS_Store
+*.pdb
 
 ###
 # OS generated
@@ -43,3 +47,6 @@ Thumbs.db
 # Builds
 *.apk
 *.unitypackage
+
+# Visual Studio 2015 cache directory
+.vs/

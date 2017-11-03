@@ -1,3 +1,0 @@
-Android
-dc07d7ad69b399a46e92c483bf1c04ca UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsTracker
-d41597239797dfa77b9733c37b0f6a6a Assembly-CSharp.dll:.AccelerometerInput
