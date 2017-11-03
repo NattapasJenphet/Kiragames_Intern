@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class AccelerometerInput : MonoBehaviour {
+public class AccelerometerInput : MonoBehaviour
+{
 
     public int Count = 0;
 
-	void Start () {
+	void Start ()
+	{
         
     }
 	
@@ -18,12 +20,13 @@ public class AccelerometerInput : MonoBehaviour {
             Debug.Log("Pressed left click.");
             Count++;
         }
-        if(Count >= 3)
+        if (Count >= 3)
         {
             SceneManager.LoadScene(0);
             Count = -1;
         }
     }
+
     void AccInput()
     {
         transform.Translate(Input.acceleration.x, 0, 0);
