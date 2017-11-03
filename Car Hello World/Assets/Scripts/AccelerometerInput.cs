@@ -5,16 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class AccelerometerInput : MonoBehaviour
 {
-
+    public GameObject Car;
+    public float speed = 10f;
     public int Count = 0;
-
+    public string OnRoad;
 	void Start ()
 	{
-        
+        Car = this.gameObject;
     }
 	
-	void Update () {
+	void Update ()
+    {
+        //move
+        Car.transform.Translate(Vector3.forward * speed * Time.deltaTime);
         AccInput();
+        //reset
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Pressed left click.");
@@ -29,6 +34,20 @@ public class AccelerometerInput : MonoBehaviour
 
     void AccInput()
     {
-        transform.Translate(Input.acceleration.x, 0, 0);
+        Vector3 dir = Vector3.zero;
+        dir.x = Input.acceleration.x;
+
+        if (dir.sqrMagnitude > 1)
+            dir.Normalize();
+
+        transform.Translate(dir.x, 0, 0);
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        if(collision.collider.gameObject.name == "Road")
+        {
+            OnRoad = (collision.collider.gameObject.transform.parent.name);
+        }
     }
 }
