@@ -30,38 +30,41 @@ public class RoadGen : MonoBehaviour {
                 if (i == 0 && Create[i] == false)
                 // Instantiate(Road[Road.Length-1], new Vector3(0, 0, 0), Quaternion.identity);
                 {
-                  GameObject Clone = Instantiate(Road[4],new Vector3( 0,0, Distance), Quaternion.identity);
-                  Clone.name = Road[4].name;
-                  Distance = Distance + 30;
-                  Create[i] = true;
+                    // GameObject Clone = Instantiate(Road[4],new Vector3( 0,0, Distance), Quaternion.identity);
+                    //GameObject Clone;
+                    GameObject.Instantiate(Road[4],new Vector3(0, 0, Distance),Quaternion.identity);
+                    // Clone.name = Road[4].name;
+                    Distance = Distance + 30;
+                    Create[i] = true;
                 }
                 else if(i == 1 && Create[i] == false)
                 {
-                  GameObject Clone = Instantiate(Road[0], new Vector3(0, 0, Distance), Quaternion.identity);
-                  Clone.name = Road[0].name;
-                  Distance = Distance + 30;
-                  Create[i] = true;
+                    // GameObject Clone = Instantiate(Road[0], new Vector3(0, 0, Distance), Quaternion.identity);
+                    // Clone.name = Road[0].name;
+                    Distance = Distance + 30;
+                    Create[i] = true;
                 }
                 else if (i == 2 && Create[i] == false)
                 {
-                  GameObject Clone = Instantiate(Road[1], new Vector3(0, 0, Distance), Quaternion.identity);
-                  Clone.name = Road[1].name;
-                  Distance = Distance + 30;
-                  Create[i] = true;
+                    // GameObject Clone = Instantiate(Road[1], new Vector3(0, 0, Distance), Quaternion.identity);
+                    // Clone.name = Road[1].name;
+                    Distance = Distance + 30;
+                    Create[i] = true;
                 }
                 else if (i == 3 && Create[i] == false)
                 {
-                  GameObject Clone = Instantiate(Road[2], new Vector3(0, 0, Distance), Quaternion.identity);
-                  Clone.name = Road[2].name;
-                  Distance = Distance + 30;
-                  Create[i] = true;
+                    // GameObject Clone = Instantiate(Road[2], new Vector3(0, 0, Distance), Quaternion.identity);
+                    // Clone.name = Road[2].name;
+                    Distance = Distance + 30;
+                    Create[i] = true;
                 }
                 else if (i == 4 && Create[i] == false)
                 {
-                  GameObject Clone = Instantiate(Road[3], new Vector3(0, 0, Distance), Quaternion.identity);
-                  Clone.name = Road[3].name;
-                  Distance = Distance + 30;
-                  Create[i] = true;
+                    // GameObject Clone = Instantiate(Road[3], new Vector3(0, 0, Distance), Quaternion.identity);
+                    // Clone.name = Road[3].name;
+                    Distance = Distance + 30;
+                    Create[i] = true;
+                  
                 }           
             }
         }
