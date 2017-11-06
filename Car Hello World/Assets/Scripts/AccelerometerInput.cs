@@ -17,8 +17,7 @@ public class AccelerometerInput : MonoBehaviour
 	void Update ()
     {
         //move
-        Car.transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        AccInput();
+        Car.transform.Translate(Vector3.forward * speed * Time.deltaTime);  
         //reset
         if (Input.GetMouseButtonDown(0))
         {

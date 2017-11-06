@@ -10,17 +10,30 @@ public class RoadGen : MonoBehaviour {
     public bool[] Create;
     public int Distance;
 
-	void Start () {
+    void Start()
+    {
         Car = GameObject.Find("Car");
         Create = new bool[5];
-        Distance = 120;
+        Distance = 0;
+        CreateMap();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         CurrentRoad();
         CheckCreate();
     }
+    void CreateMap()
+    {
+        for(int i=0; i<Road.Length; i++)
+        {
+            print(i);
+            GameObject.Instantiate(Road[i], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[i].name;
+            Distance = Distance + 30;
+        }   
+    }
+
     void CurrentRoad()
     {
         for (int i=0; i<Road.Length; i++)
@@ -30,38 +43,36 @@ public class RoadGen : MonoBehaviour {
                 if (i == 0 && Create[i] == false)
                 // Instantiate(Road[Road.Length-1], new Vector3(0, 0, 0), Quaternion.identity);
                 {
-                    // GameObject Clone = Instantiate(Road[4],new Vector3( 0,0, Distance), Quaternion.identity);
-                    //GameObject Clone;
-                    GameObject.Instantiate(Road[4],new Vector3(0, 0, Distance),Quaternion.identity);
-                    // Clone.name = Road[4].name;
+                    //GameObject Clone = Instantiate(Road[4],new Vector3( 0,0, Distance), Quaternion.identity);
+                    GameObject.Instantiate(Road[4],new Vector3(0, 0, Distance),Quaternion.identity).name = Road[4].name;
                     Distance = Distance + 30;
                     Create[i] = true;
                 }
                 else if(i == 1 && Create[i] == false)
                 {
                     // GameObject Clone = Instantiate(Road[0], new Vector3(0, 0, Distance), Quaternion.identity);
-                    // Clone.name = Road[0].name;
+                    GameObject.Instantiate(Road[0], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[0].name;
                     Distance = Distance + 30;
                     Create[i] = true;
                 }
                 else if (i == 2 && Create[i] == false)
                 {
                     // GameObject Clone = Instantiate(Road[1], new Vector3(0, 0, Distance), Quaternion.identity);
-                    // Clone.name = Road[1].name;
+                    GameObject.Instantiate(Road[1], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[1].name;
                     Distance = Distance + 30;
                     Create[i] = true;
                 }
                 else if (i == 3 && Create[i] == false)
                 {
                     // GameObject Clone = Instantiate(Road[2], new Vector3(0, 0, Distance), Quaternion.identity);
-                    // Clone.name = Road[2].name;
+                    GameObject.Instantiate(Road[2], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[2].name;
                     Distance = Distance + 30;
                     Create[i] = true;
                 }
                 else if (i == 4 && Create[i] == false)
                 {
                     // GameObject Clone = Instantiate(Road[3], new Vector3(0, 0, Distance), Quaternion.identity);
-                    // Clone.name = Road[3].name;
+                    GameObject.Instantiate(Road[3], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[3].name;
                     Distance = Distance + 30;
                     Create[i] = true;
                   
