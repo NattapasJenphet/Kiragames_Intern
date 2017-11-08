@@ -28,7 +28,7 @@ public class RoadGen : MonoBehaviour {
     {
         for(int i=0; i<Road.Length; i++)
         {
-            print(i);
+            // print(i);
             GameObject.Instantiate(Road[i], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[i].name;
             Distance = Distance + 30;
         }   
