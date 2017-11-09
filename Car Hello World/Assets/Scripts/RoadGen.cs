@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class RoadGen : MonoBehaviour {
 
-    // Use this for initialization
     public GameObject Car;
     public GameObject[] Road;
     public bool[] Create;
     public int Distance;
+    public Vector3 PosCar;
+    public float PosCar_division;
+    public int covPosCar_division;
 
     void Start()
     {
-        Car = GameObject.Find("Car");
         Create = new bool[5];
-        Distance = 0;
-        CreateMap();
+        CreateMap();      
     }
 
-    // Update is called once per frame
     void Update()
     {
+        PosCar = Car.transform.position;
+        PosCar_division = PosCar.z / 30;
+        covPosCar_division = (int) PosCar_division;
+
         CurrentRoad();
         CheckCreate();
     }
@@ -28,7 +31,6 @@ public class RoadGen : MonoBehaviour {
     {
         for(int i=0; i<Road.Length; i++)
         {
-            // print(i);
             GameObject.Instantiate(Road[i], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[i].name;
             Distance = Distance + 30;
         }   
@@ -36,57 +38,19 @@ public class RoadGen : MonoBehaviour {
 
     void CurrentRoad()
     {
-        for (int i=0; i<Road.Length; i++)
+        for (int i = 0; i < Road.Length; i++)
         {
-           if(Car.GetComponent<AccelerometerInput>().OnRoad == Road[i].name)
+            if (covPosCar_division % 5 == i && Create[i] == false)
             {
-                if (i == 0 && Create[i] == false)
-                // Instantiate(Road[Road.Length-1], new Vector3(0, 0, 0), Quaternion.identity);
-                {
-                    //GameObject Clone = Instantiate(Road[4],new Vector3( 0,0, Distance), Quaternion.identity);
-                    GameObject.Instantiate(Road[4],new Vector3(0, 0, Distance),Quaternion.identity).name = Road[4].name;
-                    Distance = Distance + 30;
-                    Create[i] = true;
-                }
-                else if(i == 1 && Create[i] == false)
-                {
-                    // GameObject Clone = Instantiate(Road[0], new Vector3(0, 0, Distance), Quaternion.identity);
-                    GameObject.Instantiate(Road[0], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[0].name;
-                    Distance = Distance + 30;
-                    Create[i] = true;
-                }
-                else if (i == 2 && Create[i] == false)
-                {
-                    // GameObject Clone = Instantiate(Road[1], new Vector3(0, 0, Distance), Quaternion.identity);
-                    GameObject.Instantiate(Road[1], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[1].name;
-                    Distance = Distance + 30;
-                    Create[i] = true;
-                }
-                else if (i == 3 && Create[i] == false)
-                {
-                    // GameObject Clone = Instantiate(Road[2], new Vector3(0, 0, Distance), Quaternion.identity);
-                    GameObject.Instantiate(Road[2], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[2].name;
-                    Distance = Distance + 30;
-                    Create[i] = true;
-                }
-                else if (i == 4 && Create[i] == false)
-                {
-                    // GameObject Clone = Instantiate(Road[3], new Vector3(0, 0, Distance), Quaternion.identity);
-                    GameObject.Instantiate(Road[3], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[3].name;
-                    Distance = Distance + 30;
-                    Create[i] = true;
-                  
-                }           
+                GameObject.Instantiate(Road[i], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[i].name;
+                Distance = Distance + 30;
+                Create[i] = true;
             }
         }
     }
     void CheckCreate()
     {
-        if(Create[0] == true && 
-           Create[1] == true &&
-           Create[2] == true &&
-           Create[3] == true &&
-           Create[4] == true )
+       if(Create[0] == true && Create[1] == true && Create[2] == true && Create[3] == true && Create[4] == true && covPosCar_division % 5 == 0)
         {
             Create[0] = false;
             Create[1] = false;
@@ -94,6 +58,5 @@ public class RoadGen : MonoBehaviour {
             Create[3] = false;
             Create[4] = false;
         }
-        
     }
 }

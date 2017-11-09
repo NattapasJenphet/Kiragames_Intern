@@ -450,6 +450,9 @@ MonoBehaviour:
   - {fileID: 122400, guid: 6fb150a3eb3cc14419551f6297a7fbeb, type: 2}
   Create: 
   Distance: 0
+  PosCar: {x: 0, y: 0, z: 0}
+  PosCar_division: 0
+  covPosCar_division: 0
 --- !u!1 &475601028
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,7 +792,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -476.7, y: 289.8}
+  m_AnchoredPosition: {x: -397, y: 289.8}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &513733027
@@ -902,7 +905,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1631002236}
   - 33: {fileID: 1631002235}
-  - 65: {fileID: 1631002234}
+  - 136: {fileID: 1631002234}
   - 23: {fileID: 1631002233}
   - 54: {fileID: 1631002237}
   - 114: {fileID: 1631002238}
@@ -939,8 +942,8 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!65 &1631002234
-BoxCollider:
+--- !u!136 &1631002234
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -948,8 +951,9 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1631002235
 MeshFilter:
@@ -985,7 +989,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1631002238
 MonoBehaviour:
@@ -998,8 +1002,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02394bdad8c97b24e8291ff45c2e65c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Car: {fileID: 0}
-  speed: 5
+  Car: {fileID: 1631002232}
+  speed: 0
   OnRoad: 
   ACC_onTouch: 0
   BRAKE_ontouch: 0

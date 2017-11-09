@@ -26,7 +26,8 @@ public class AccelerometerInput : MonoBehaviour
         valueSpeed.text = ("Speed : " + speed);
         //move forward
         AccInput();
-        Car.transform.Translate(Vector3.forward * speed * Time.deltaTime);  
+        Car.GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,GetComponent<Rigidbody>().velocity.y, 1f * speed * Time.deltaTime);
+        // Car.transform.Translate(Vector3.forward * speed * Time.deltaTime);  
     }
 
     void AccInput()
@@ -35,10 +36,14 @@ public class AccelerometerInput : MonoBehaviour
         dir.x = Input.acceleration.x;
         dir.x = dir.x / 2;
 
-        if (dir.sqrMagnitude > 1)
+        /*if (dir.sqrMagnitude > 1)
+        {
             dir.Normalize();
-
-        transform.Translate(dir.x, 0, 0);
+        }*/
+        if (speed != 0 && speed > 100 )
+        {
+           transform.Translate(dir.x, 0f, 0f);
+        }
         speedControl();
     }
 
@@ -59,17 +64,17 @@ public class AccelerometerInput : MonoBehaviour
     {  
         if(ACC_onTouch == true && maxlimit != true)
         {
-            speed = speed + 0.2f;       
+            speed = speed + 10f;       
         }else if(ACC_onTouch == false)
         {
-            speed = speed - 0.2f;
+            speed = speed - 5f;
         }
         // max limit
-        if(speed > 50)
+        if(speed > 800)
         {
             maxlimit = true;
-            speed = 50;
-        }else if(speed < 50)
+            speed = 800;
+        }else if(speed < 800)
         {
             maxlimit = false;
         }
@@ -80,7 +85,7 @@ public class AccelerometerInput : MonoBehaviour
         }
         if(BRAKE_ontouch == true)
         {
-            speed = speed - 0.4f;
+            speed = speed - 4f;
             if(speed < 0)
             {
                 speed = 0;
