@@ -13,7 +13,7 @@ public class RoadGen : MonoBehaviour {
     public int covPosCar_division;
 
     void Start()
-    {
+    { // create จำนวนของ prefab ถนน
         Create = new bool[5];
         CreateMap();      
     }
@@ -39,7 +39,7 @@ public class RoadGen : MonoBehaviour {
     void CurrentRoad()
     {
         for (int i = 0; i < Road.Length; i++)
-        {
+        { // modulo = จำนวนของ prefab ถนน 
             if (covPosCar_division % 5 == i && Create[i] == false)
             {
                 GameObject.Instantiate(Road[i], new Vector3(0, 0, Distance), Quaternion.identity).name = Road[i].name;
@@ -51,7 +51,7 @@ public class RoadGen : MonoBehaviour {
     void CheckCreate()
     {
        if(Create[0] == true && Create[1] == true && Create[2] == true && Create[3] == true && Create[4] == true && covPosCar_division % 5 == 0)
-        {
+        { // modulo = จำนวนของ prefab ถนน 
             Create[0] = false;
             Create[1] = false;
             Create[2] = false;

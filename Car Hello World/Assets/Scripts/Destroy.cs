@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class Destroy : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+    // Use this for initialization
+    GameObject Car;
+	void Start ()
+    {
+        Car = GameObject.Find("Car");
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        Destroy(this.gameObject, 45);
+	void Update ()
+    {
+        if (Car.transform.position.z > this.transform.position.z + 30f)
+        {
+            Destroy(this.gameObject);
+        }
 	}
 }
