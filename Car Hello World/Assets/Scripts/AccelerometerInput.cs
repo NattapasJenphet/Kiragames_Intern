@@ -35,21 +35,25 @@ public class AccelerometerInput : MonoBehaviour
         dir.x = Input.acceleration.x;
 
         // print("Input acc: " + dir.x);
-        if (dir.x > 0.3f && dir.x * -1 < 0)
+        if (dir.x > 0.4f && dir.x * -1 < 0)
         {
-            dir.x = dir.x / 2.5f;
+            dir.x = dir.x / 3f;
+            print("fast right");
         }
-        else if (dir.x < 0.3f && dir.x * -1 < 0)
+        else if (dir.x < 0.4f && dir.x * -1 < 0)
         {
-            dir.x = dir.x / 4;
+            dir.x = dir.x / 5;
+            print("normal right");
         }
-        if (dir.x < -0.3f && dir.x * -1 > 0)
+        if (dir.x < -0.4f && dir.x * -1 > 0)
         {
-            dir.x = dir.x / 2.5f;
+            dir.x = dir.x / 3f;
+            print("fast left");
         }
-        else if (dir.x > -0.3f && dir.x * -1 > 0)
+        else if (dir.x > -0.4f && dir.x * -1 > 0)
         {
-            dir.x = dir.x / 4;
+            dir.x = dir.x / 5;
+            print("normal left");
         }
 
         /*if (dir.sqrMagnitude > 1)
