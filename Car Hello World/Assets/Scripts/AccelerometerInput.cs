@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class AccelerometerInput : MonoBehaviour
 {
     public GameObject Car;
-    public float speed = 0f;
+    public float speed = 50f;
     public string OnRoad;
     // button 
     public bool ACC_onTouch;
@@ -67,7 +67,7 @@ public class AccelerometerInput : MonoBehaviour
             speed = speed + 10f;       
         }else if(ACC_onTouch == false)
         {
-            speed = speed - 5f;
+            speed = speed - 10f;
         }
         // max limit
         if(speed > 800)
@@ -79,16 +79,16 @@ public class AccelerometerInput : MonoBehaviour
             maxlimit = false;
         }
         // min limit
-        if (speed < 0)
+        if (speed < 200)
         {
-            speed = 0;
+            speed = 200;
         }
         if(BRAKE_ontouch == true)
         {
             speed = speed - 4f;
-            if(speed < 0)
+            if(speed < 200)
             {
-                speed = 0;
+                speed = 200;
             }
         }
     }
