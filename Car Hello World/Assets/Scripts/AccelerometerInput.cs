@@ -8,7 +8,6 @@ public class AccelerometerInput : MonoBehaviour
 {
     public GameObject Car;
     public float speed = 50f;
-    public string OnRoad;
     // button 
     public bool ACC_onTouch;
     public bool BRAKE_ontouch;
@@ -34,25 +33,35 @@ public class AccelerometerInput : MonoBehaviour
     {
         Vector3 dir = Vector3.zero;
         dir.x = Input.acceleration.x;
-        dir.x = dir.x / 2;
+
+        // print("Input acc: " + dir.x);
+        if (dir.x > 0.3f && dir.x * -1 < 0)
+        {
+            dir.x = dir.x / 2.5f;
+        }
+        else if (dir.x < 0.3f && dir.x * -1 < 0)
+        {
+            dir.x = dir.x / 4;
+        }
+        if (dir.x < -0.3f && dir.x * -1 > 0)
+        {
+            dir.x = dir.x / 2.5f;
+        }
+        else if (dir.x > -0.3f && dir.x * -1 > 0)
+        {
+            dir.x = dir.x / 4;
+        }
 
         /*if (dir.sqrMagnitude > 1)
         {
             dir.Normalize();
         }*/
-        if (speed != 0 && speed > 100 )
+
+        if (speed != 0 && speed > 100)
         {
-           transform.Translate(dir.x, 0f, 0f);
+            transform.Translate(dir.x, 0f, 0f);
         }
         speedControl();
-    }
-
-    void OnCollisionStay(Collision collision)
-    {
-        if(collision.collider.gameObject.name == "Road")
-        {
-            OnRoad = (collision.collider.gameObject.transform.parent.name);
-        }
     }
 
     public void AccOnTouch_true() { ACC_onTouch = true; }
@@ -64,10 +73,10 @@ public class AccelerometerInput : MonoBehaviour
     {  
         if(ACC_onTouch == true && maxlimit != true)
         {
-            speed = speed + 10f;       
+            speed = speed + 15f;       
         }else if(ACC_onTouch == false)
         {
-            speed = speed - 10f;
+            speed = speed - 5f;
         }
         // max limit
         if(speed > 800)
@@ -85,7 +94,8 @@ public class AccelerometerInput : MonoBehaviour
         }
         if(BRAKE_ontouch == true)
         {
-            speed = speed - 4f;
+            speed = speed - 20f;
+
             if(speed < 200)
             {
                 speed = 200;
