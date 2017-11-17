@@ -24,6 +24,7 @@ public class AccelerometerInput : MonoBehaviour
 	
 	void Update ()
     {
+        ResetPosition();
         valueSpeed.text = ("Speed : " + speed);
         // move forward
         AccInput();
@@ -111,6 +112,42 @@ public class AccelerometerInput : MonoBehaviour
             {
                 speed = 200;
             }
+        }
+    }
+    [Header("Reset component")]
+    public float count = 0;
+    public float n_count = 0;
+    public bool check = false;
+    public float oldPos;
+    public float newPos;
+    void ResetPosition()
+    {
+        oldPos = Car.transform.position.z;
+        count = count + 1 * Time.deltaTime;
+        if (count > 6)
+        {    
+            if (oldPos == newPos)
+            {              
+                n_count = n_count + 1 * Time.deltaTime;
+                if(n_count > 1.5f)
+                {
+                    Car.transform.position = new Vector3(0f, Car.transform.position.y, Car.transform.position.z);
+                    count = 0;
+                    n_count = 0;
+                    check = false;
+                }
+            }
+            else if (oldPos != newPos)
+            {
+                count = 0;
+                n_count = 0;
+                check = false;
+            }
+        }
+        if(count > 4 && check == false)
+        {
+            newPos = Car.transform.position.z;
+            check = true;
         }
     }
 }

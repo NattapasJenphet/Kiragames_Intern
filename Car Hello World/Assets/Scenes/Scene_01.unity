@@ -1168,7 +1168,7 @@ GameObject:
   - 124: {fileID: 1184166625}
   - 81: {fileID: 1184166624}
   m_Layer: 0
-  m_Name: Main Camera (1)
+  m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1432,6 +1432,9 @@ MonoBehaviour:
   minlimit: 0
   valueSpeed: {fileID: 513733027}
   dirdebug: {fileID: 1015967737}
+  count: 0
+  oldPos: 0
+  newPos: 0
 --- !u!1 &1893977477
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,7 +1448,7 @@ GameObject:
   - 124: {fileID: 1893977479}
   - 81: {fileID: 1893977478}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Main Camera old
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
