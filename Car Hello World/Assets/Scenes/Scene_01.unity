@@ -1390,8 +1390,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1631002232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 0.828, z: -6.68}
-  m_LocalScale: {x: 1.8, y: 1.4, z: 4.7}
+  m_LocalPosition: {x: 0.01, y: 0.42, z: -6.68}
+  m_LocalScale: {x: 0.75826067, y: 0.58975834, z: 1.9799029}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1893977482}
@@ -1425,14 +1425,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Car: {fileID: 1631002232}
-  speed: 20
+  speed: 0
   ACC_onTouch: 0
   BRAKE_ontouch: 0
   maxlimit: 0
   minlimit: 0
   valueSpeed: {fileID: 513733027}
-  dirdebug: {fileID: 1015967737}
+  dirDebug: {fileID: 1015967737}
   count: 0
+  n_count: 0
+  check: 0
   oldPos: 0
   newPos: 0
 --- !u!1 &1893977477

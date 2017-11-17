@@ -11,11 +11,11 @@ public class AccelerometerInput : MonoBehaviour
     // button 
     public bool ACC_onTouch;
     public bool BRAKE_ontouch;
-    public bool maxlimit;
-    public bool minlimit;
+    public bool maxLimit;
+    public bool minLimit;
     // debug text
     public Text valueSpeed;
-    public Text dirdebug;
+    public Text dirDebug;
 
     void Start ()
 	{
@@ -24,40 +24,45 @@ public class AccelerometerInput : MonoBehaviour
 	
 	void Update ()
     {
-        ResetPosition();
-        valueSpeed.text = ("Speed : " + speed);
+        resetPosition();
+        // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.magnitude * 3.6f);
+        // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.z);
+        float sqarMagZ = Mathf.Sqrt(GetComponent<Rigidbody>().velocity.z * GetComponent<Rigidbody>().velocity.z);
+        // convert m/s --> km/hr
+        float cov_sqarMagZ = sqarMagZ * 3.6f; 
+        valueSpeed.text = ("Speed : " + (int)cov_sqarMagZ);
+
+        accInput();
         // move forward
-        AccInput();
-        Car.GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,GetComponent<Rigidbody>().velocity.y, 1f * speed * Time.deltaTime);
+        Car.GetComponent<Rigidbody>().velocity = Vector3.forward * speed;
+        // Car.GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, GetComponent<Rigidbody>().velocity.y, 1f * speed * Time.deltaTime);
         // Car.transform.Translate(Vector3.forward * speed * Time.deltaTime);  
     }
 
-    void AccInput()
+    void accInput()
     {
         Vector3 dir = Vector3.zero;
         dir.x = Input.acceleration.x;
         // Debug text
-        dirdebug.text = ("acc " + dir.x);
-
-        /*if (dir.sqrMagnitude > 1)
-        {
-            dir.Normalize();
-        }*/
+        dirDebug.text = ("acc " + dir.x);
 
         // keyboard control editor
         if (Input.GetKey(KeyCode.A))
         {
-            dir.x = -0.2f;
+            Car.GetComponent<Rigidbody>().AddRelativeForce(-10f * 10f, 0f, 0f);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            dir.x = 0.2f;
+            Car.GetComponent<Rigidbody>().AddRelativeForce(10f * 10f, 0f, 0f);
         }
 
         // transform.Translate(dir.x, 0f, 0f);   
         // Car.GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, GetComponent<Rigidbody>().velocity.y, 1f * speed * Time.deltaTime);
-        Car.GetComponent<Rigidbody>().AddRelativeForce(0f, 0f, speed);
-        Car.GetComponent<Rigidbody>().AddRelativeForce(dir.x * 10f, 0f, 0f);
+        // Car.GetComponent<Rigidbody>().AddRelativeForce(0f, 0f, speed);
+        // Car.GetComponent<Rigidbody>().AddRelativeForce(0f, 0f, 10f);
+
+        // turn left & right control
+        Car.GetComponent<Rigidbody>().AddRelativeForce(dir.x * 10f, 0f, 0f); 
         speedControl();
    
     }
@@ -69,58 +74,69 @@ public class AccelerometerInput : MonoBehaviour
 
     void speedControl()
     {
-        if (ACC_onTouch == true && maxlimit != true)
+        if (ACC_onTouch == true && maxLimit != true) // use button acc
         {
-            if (speed <= 600) // 0 - 600
+            if (speed <= 20) // 0 - 20
             {
-                speed = speed + 1.5f;
+                speed = speed + 0.1f;         
                 // print("G 1");
             }
-            else if (speed >= 600.1 && speed <= 900) // 600 - 900
+            else if (speed >= 20 && speed <= 50) // 20 - 100
             {
-                speed = speed + 0.5f;
+                speed = speed + 0.05f;
                 // print("G 2");
             }
-            else if (speed >= 900.1) // 900+
+            else if (speed >= 50 && speed <= 55) // 20 - 100
             {
-                speed = speed + 0.1f;
+                speed = speed + 0.005f;
                 // print("G 3");
             }
-        }else if (ACC_onTouch == false)
+            else if (speed >= 55) // 100+
+            {
+                speed = speed + 0.0005f;
+                // print("G 4");
+            }
+        }else if (ACC_onTouch == false) // release button acc
         {
-            speed = speed - 5f * 0.4f;
+                speed = speed - 0.05f;
         }
         // max limit
-        if(speed > 1200)
+        if(speed >= 60f ) 
         {
-            maxlimit = true;
-            speed = 1200;
-        }else if(speed < 1200)
+            maxLimit = true;
+            speed = 60f;
+
+        }else if(speed <= 60f )
         {
-            maxlimit = false;
+            maxLimit = false;
         }
         // min limit
-        if (speed < 200)
+        if (speed <= 5.6f)
         {
-            speed = 200;
+            minLimit = true;
+            speed = 5.6f;
+        }else if (speed >= 5.6f)
+        {
+            minLimit = false;
         }
-        if(BRAKE_ontouch == true)
+        if(BRAKE_ontouch == true && minLimit != true) // use button brake
         {
-            speed = speed - 10;
-
-            if(speed < 200)
-            {
-                speed = 200;
-            }
+            speed = speed - 0.8f;           
         }
     }
-    [Header("Reset component")]
+
+    [HideInInspector]
     public float count = 0;
+    [HideInInspector]
     public float n_count = 0;
+    [HideInInspector]
     public bool check = false;
+    [HideInInspector]
     public float oldPos;
-    public float newPos;
-    void ResetPosition()
+    [HideInInspector]
+    public float newPos;    
+
+    void resetPosition()
     {
         oldPos = Car.transform.position.z;
         count = count + 1 * Time.deltaTime;
