@@ -14,25 +14,36 @@ public class AccelerometerInput : MonoBehaviour
     public bool maxLimit;
     public bool minLimit;
     // debug text
+    [Space(10)]
     public Text valueSpeed;
     public Text dirDebug;
+    public Text fixedValueSpeed;
+    [Space(10)]
+    public Vector3 currentPos;
+    public Vector3 fixedPos;
+    public float fixedDeltaPos;
+    public float cov_km;
 
     void Start ()
 	{
         Car = this.gameObject;
     }
-	
-	void Update ()
-    {
-        resetPosition();
-        // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.magnitude * 3.6f);
-        // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.z);   
 
-        float sqarMagZ = GetComponent<Rigidbody>().velocity.magnitude;
-        // convert m/s --> km/hr
-        float cov_sqarMagZ = sqarMagZ * 3.6f;
-        valueSpeed.text = ("Speed : " + (int)cov_sqarMagZ);
-        
+    void FixedUpdate()
+    {
+        fixedPos = Car.transform.position;
+        fixedDeltaPos = fixedDeltaPos / Time.deltaTime;
+        cov_km = fixedDeltaPos * 3.6f;
+        cov_km = (int)cov_km;
+    }
+    
+    void Update ()
+    {
+        currentPos = Car.transform.position;
+        fixedDeltaPos = Vector3.Distance(currentPos, fixedPos);     
+        fixedValueSpeed.text = ("Fixed Speed : " + cov_km);
+
+        resetPosition();       
         accInput();
         // move forward
         Car.GetComponent<Rigidbody>().velocity = Vector3.forward * speed;
@@ -40,12 +51,20 @@ public class AccelerometerInput : MonoBehaviour
         // Car.transform.Translate(Vector3.forward * speed * Time.deltaTime);  
     }
 
+   /* void velocityConvert()
+    {
+        // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.magnitude * 3.6f);  
+        float lenghtVector = GetComponent<Rigidbody>().velocity.magnitude;
+        float cov_lenghtVector = lenghtVector * 3.6f;
+        valueSpeed.text = ("Speed : " + (int)cov_lenghtVector);
+    }*/
+
     void accInput()
     {
         Vector3 dir = Vector3.zero;
         dir.x = Input.acceleration.x;
         // Debug text
-        dirDebug.text = ("acc " + dir.x);
+        dirDebug.text = ("Acc " + dir.x);
 
         // keyboard control editor
         if (Input.GetKey(KeyCode.A))
@@ -82,17 +101,17 @@ public class AccelerometerInput : MonoBehaviour
                 speed = speed + 0.1f;        
                 // print("G 1");
             }
-            else if (speed >= 20 && speed <= 50) // 20 - 100
+            else if (speed >= 20 && speed <= 52) // 20 - 100
             {
                 speed = speed + 0.05f;
                 // print("G 2");
             }
-            else if (speed >= 50 && speed <= 55) // 20 - 100
+            else if (speed >= 52 && speed <= 57) // 20 - 100
             {
                 speed = speed + 0.005f;
                 // print("G 3");
             }
-            else if (speed >= 55) // 100+
+            else if (speed >= 57) // 100+
             {
                 speed = speed + 0.001f;
                 // print("G 4");
