@@ -29,19 +29,16 @@ public class AccelerometerInput : MonoBehaviour
         Car = this.gameObject;
     }
 
+	Vector3 lastPos;
     void FixedUpdate()
     {
-        fixedPos = Car.transform.position;
-        fixedDeltaPos = fixedDeltaPos / Time.deltaTime;
-        cov_km = fixedDeltaPos * 3.6f;
-        cov_km = (int)cov_km;
+		Vector3 deltaPos = transform.position - lastPos;
+		fixedValueSpeed.text = ("Fixed Speed : " + (deltaPos.z / Time.deltaTime * 3.6f));
+		lastPos = transform.position;
     }
     
     void Update ()
     {
-        currentPos = Car.transform.position;
-        fixedDeltaPos = Vector3.Distance(currentPos, fixedPos);     
-        fixedValueSpeed.text = ("Fixed Speed : " + cov_km);
 
         resetPosition();       
         accInput();
