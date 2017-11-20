@@ -26,12 +26,13 @@ public class AccelerometerInput : MonoBehaviour
     {
         resetPosition();
         // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.magnitude * 3.6f);
-        // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.z);
-        float sqarMagZ = Mathf.Sqrt(GetComponent<Rigidbody>().velocity.z * GetComponent<Rigidbody>().velocity.z);
-        // convert m/s --> km/hr
-        float cov_sqarMagZ = sqarMagZ * 3.6f; 
-        valueSpeed.text = ("Speed : " + (int)cov_sqarMagZ);
+        // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.z);   
 
+        float sqarMagZ = GetComponent<Rigidbody>().velocity.magnitude;
+        // convert m/s --> km/hr
+        float cov_sqarMagZ = sqarMagZ * 3.6f;
+        valueSpeed.text = ("Speed : " + (int)cov_sqarMagZ);
+        
         accInput();
         // move forward
         Car.GetComponent<Rigidbody>().velocity = Vector3.forward * speed;
@@ -78,7 +79,7 @@ public class AccelerometerInput : MonoBehaviour
         {
             if (speed <= 20) // 0 - 20
             {
-                speed = speed + 0.1f;         
+                speed = speed + 0.1f;        
                 // print("G 1");
             }
             else if (speed >= 20 && speed <= 50) // 20 - 100
@@ -93,7 +94,7 @@ public class AccelerometerInput : MonoBehaviour
             }
             else if (speed >= 55) // 100+
             {
-                speed = speed + 0.0005f;
+                speed = speed + 0.001f;
                 // print("G 4");
             }
         }else if (ACC_onTouch == false) // release button acc
@@ -121,7 +122,7 @@ public class AccelerometerInput : MonoBehaviour
         }
         if(BRAKE_ontouch == true && minLimit != true) // use button brake
         {
-            speed = speed - 0.8f;           
+            speed = speed - 0.8f;
         }
     }
 

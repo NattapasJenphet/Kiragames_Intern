@@ -1425,11 +1425,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Car: {fileID: 1631002232}
-  speed: 0
+  speed: 6
   ACC_onTouch: 0
   BRAKE_ontouch: 0
-  maxlimit: 0
-  minlimit: 0
+  maxLimit: 0
+  minLimit: 0
   valueSpeed: {fileID: 513733027}
   dirDebug: {fileID: 1015967737}
   count: 0
