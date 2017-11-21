@@ -3,6 +3,9 @@ using System.Collections;
 
 public class addForceTest : MonoBehaviour {
 
+    public Rigidbody rb;
+    public float velocity;
+
      void Awake()
     {
         print("function Awake " + Time.deltaTime);
@@ -11,9 +14,19 @@ public class addForceTest : MonoBehaviour {
     void Start ()
     {
         print("function start " + Time.deltaTime);
+        rb = GetComponent<Rigidbody>();
 	}
 	
 	void Update () {
+
+        velocity = rb.velocity.magnitude;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.velocity = new Vector3(0, 10f, 0);
+            velocity = rb.velocity.magnitude;
+            print("test velocity");
+        }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
