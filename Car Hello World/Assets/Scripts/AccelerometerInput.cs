@@ -20,7 +20,6 @@ public class AccelerometerInput : MonoBehaviour
     public Text fixedValueSpeed;
     [Space(10)]
     public Vector3 currentPos;
-    public Vector3 fixedPos;
     public float fixedDeltaPos;
     public float cov_km;
 
@@ -39,7 +38,6 @@ public class AccelerometerInput : MonoBehaviour
     
     void Update ()
     {
-
         resetPosition();       
         accInput();
         // move forward
