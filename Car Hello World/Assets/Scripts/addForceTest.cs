@@ -5,26 +5,35 @@ public class addForceTest : MonoBehaviour {
 
     public Rigidbody rb;
     public float velocity;
+    public Vector3 v_velocity;
 
      void Awake()
     {
-        print("function Awake " + Time.deltaTime);
+        // print("function Awake " + Time.deltaTime);
     }
 
     void Start ()
     {
-        print("function start " + Time.deltaTime);
+        // print("function start " + Time.deltaTime);
         rb = GetComponent<Rigidbody>();
 	}
-	
-	void Update () {
+    void FixedUpdate()
+    {
+        // print("function FixedUpdate " + Time.deltaTime);
+    }
+
+    void Update () {
+
+        // print("function Update " + Time.deltaTime);
 
         velocity = rb.velocity.magnitude;
+        v_velocity = rb.velocity;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector3(0, 10f, 0);
             velocity = rb.velocity.magnitude;
+            v_velocity = rb.velocity;
             print("test velocity");
         }
 
@@ -58,5 +67,10 @@ public class addForceTest : MonoBehaviour {
             GetComponent<Rigidbody>().AddRelativeTorque(Vector3.down * 100f);
             print("Key up");
         }
+    }
+
+    void LateUpdate()
+    {
+        // print("function LastUpdate " + Time.deltaTime);
     }
 }

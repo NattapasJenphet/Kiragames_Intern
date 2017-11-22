@@ -265,6 +265,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 849fc53e5d3cdac4faf7de92f2b24dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  velocity: 0
 --- !u!23 &1117958471
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -350,25 +352,13 @@ GameObject:
   - 135: {fileID: 1123834156}
   - 23: {fileID: 1123834155}
   - 54: {fileID: 1123834154}
-  - 114: {fileID: 1123834153}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1123834153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1123834152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fc53e5d3cdac4faf7de92f2b24dc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_IsActive: 0
 --- !u!54 &1123834154
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -454,25 +444,13 @@ GameObject:
   - 65: {fileID: 1204816339}
   - 23: {fileID: 1204816338}
   - 54: {fileID: 1204816337}
-  - 114: {fileID: 1204816336}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1204816336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1204816335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fc53e5d3cdac4faf7de92f2b24dc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_IsActive: 0
 --- !u!54 &1204816337
 Rigidbody:
   m_ObjectHideFlags: 0
