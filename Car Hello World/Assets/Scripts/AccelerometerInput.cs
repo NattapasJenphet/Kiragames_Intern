@@ -18,32 +18,49 @@ public class AccelerometerInput : MonoBehaviour
     public Text valueSpeed;
     public Text dirDebug;
     public Text fixedValueSpeed;
-    [Space(10)]
+    [HideInInspector]
     public Vector3 currentPos;
-    public float fixedDeltaPos;
-    public float cov_km;
+    [HideInInspector]
+    public Vector3 lastPos;
+    [Space(10)]
+    public float[] gearRatio;
+    public int gear;
+    public Rigidbody rb;
+    public Vector3 temp;
 
     void Start ()
 	{
         Car = this.gameObject;
+        rb = Car.GetComponent<Rigidbody>();
+        temp = rb.centerOfMass;
+        temp.x = 0f;
+        temp.y = -0.8f;
+        temp.z = 0f;
+        rb.centerOfMass = temp;
     }
 
-	Vector3 lastPos;
+    [Space(10)]
+    public GameObject wheel_BR;
+    public GameObject wheell_BL;
+    public WheelCollider BR;
+    public WheelCollider BL;
+
     void FixedUpdate()
     {
-		Vector3 deltaPos = transform.position - lastPos;
-		fixedValueSpeed.text = ("Fixed Speed : " + (deltaPos.z / Time.deltaTime * 3.6f));
+        moveCar();
+        Vector3 deltaPos = transform.position - lastPos;
+        fixedValueSpeed.text = ("Fixed Speed : " + (int)(deltaPos.z / Time.deltaTime * 3.6f));
 		lastPos = transform.position;
+        
     }
     
     void Update ()
     {
         resetPosition();       
         accInput();
+        // carEngine();
         // move forward
-        Car.GetComponent<Rigidbody>().velocity = Vector3.forward * speed;
-        // Car.GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, GetComponent<Rigidbody>().velocity.y, 1f * speed * Time.deltaTime);
-        // Car.transform.Translate(Vector3.forward * speed * Time.deltaTime);  
+        // Car.GetComponent<Rigidbody>().velocity = Vector3.forward * speed; 
     }
 
    /* void velocityConvert()
@@ -71,15 +88,15 @@ public class AccelerometerInput : MonoBehaviour
             Car.GetComponent<Rigidbody>().AddRelativeForce(10f * 10f, 0f, 0f);
         }
 
-        // transform.Translate(dir.x, 0f, 0f);   
-        // Car.GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, GetComponent<Rigidbody>().velocity.y, 1f * speed * Time.deltaTime);
-        // Car.GetComponent<Rigidbody>().AddRelativeForce(0f, 0f, speed);
-        // Car.GetComponent<Rigidbody>().AddRelativeForce(0f, 0f, 10f);
-
         // turn left & right control
         Car.GetComponent<Rigidbody>().AddRelativeForce(dir.x * 10f, 0f, 0f); 
         speedControl();
-   
+    }
+
+    void moveCar()
+    {
+        BR.motorTorque =  50*Input.GetAxis("Vertical");
+        BL.motorTorque =  50*Input.GetAxis("Vertical");
     }
 
     public void AccOnTouch_true() { ACC_onTouch = true; }
@@ -96,17 +113,17 @@ public class AccelerometerInput : MonoBehaviour
                 speed = speed + 0.1f;        
                 // print("G 1");
             }
-            else if (speed >= 20 && speed <= 52) // 20 - 100
+            else if (speed >= 20 && speed <= 52) // 20 - 52
             {
                 speed = speed + 0.05f;
                 // print("G 2");
             }
-            else if (speed >= 52 && speed <= 57) // 20 - 100
+            else if (speed >= 52 && speed <= 57) // 52 - 57
             {
                 speed = speed + 0.005f;
                 // print("G 3");
             }
-            else if (speed >= 57) // 100+
+            else if (speed >= 57) // 57+
             {
                 speed = speed + 0.001f;
                 // print("G 4");
@@ -180,5 +197,29 @@ public class AccelerometerInput : MonoBehaviour
             newPos = Car.transform.position.z;
             check = true;
         }
+    }
+
+    void carEngine()
+    {
+        for (int i = 0; i < gearRatio.Length; i++)
+        {
+            if (gearRatio[i] > speed)
+            {
+                gear = i;
+                break;
+            }
+        }
+            float Max_gear = 0;
+            float Min_gear = 0;
+            if(gear == 0)
+            {
+                Min_gear = 0;
+            }
+            else
+            {
+                Min_gear = gearRatio[gear - 1];
+            }
+            Max_gear = gearRatio[gear];
+            GetComponent<AudioSource>().pitch = ((speed - Min_gear) / (Max_gear - Min_gear)) + 0.8f;
     }
 }
