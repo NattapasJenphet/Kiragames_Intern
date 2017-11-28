@@ -1027,12 +1027,12 @@ GameObject:
   - 222: {fileID: 513733028}
   - 114: {fileID: 513733027}
   m_Layer: 5
-  m_Name: Speed
+  m_Name: Gear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &513733026
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1048,7 +1048,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -471, y: 256}
+  m_AnchoredPosition: {x: 416, y: 280}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &513733027
@@ -1083,7 +1083,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Speed
+  m_Text: Gear
 --- !u!222 &513733028
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1814,13 +1814,14 @@ MonoBehaviour:
   valueSpeed: {fileID: 513733027}
   dirDebug: {fileID: 1015967737}
   fixedValueSpeed: {fileID: 842467016}
+  Geartext: {fileID: 513733027}
   currentPos: {x: 0, y: 0, z: 0}
   lastPos: {x: 0, y: 0, z: 0}
   gearRatio:
-  - 20
-  - 30
-  - 52
-  - 57
+  - 50
+  - 100
+  - 150
+  - 200
   gear: 0
   rb: {fileID: 0}
   temp: {x: 0, y: 0, z: 0}
@@ -1828,6 +1829,8 @@ MonoBehaviour:
   wheell_BL: {fileID: 1128840328}
   BR: {fileID: 269530174}
   BL: {fileID: 266173177}
+  engineTorque: 200
+  DeleyForce: 0
   count: 0
   n_count: 0
   check: 0
@@ -1839,7 +1842,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1631002232}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6a2659f54414aa143967d83c0f62a967, type: 3}

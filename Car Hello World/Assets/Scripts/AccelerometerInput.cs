@@ -18,6 +18,7 @@ public class AccelerometerInput : MonoBehaviour
     public Text valueSpeed;
     public Text dirDebug;
     public Text fixedValueSpeed;
+    public Text Geartext;
     [HideInInspector]
     public Vector3 currentPos;
     [HideInInspector]
@@ -27,16 +28,18 @@ public class AccelerometerInput : MonoBehaviour
     public int gear;
     public Rigidbody rb;
     public Vector3 temp;
+    public AudioSource[] soundEffect;
 
     void Start ()
 	{
         Car = this.gameObject;
         rb = Car.GetComponent<Rigidbody>();
-        temp = rb.centerOfMass;
+        rb.centerOfMass = new Vector3(0, -1, -25);
+        /*temp = rb.centerOfMass;
         temp.x = 0f;
         temp.y = -0.8f;
         temp.z = 0f;
-        rb.centerOfMass = temp;
+        rb.centerOfMass = temp;*/
     }
 
     [Space(10)]
@@ -44,66 +47,106 @@ public class AccelerometerInput : MonoBehaviour
     public GameObject wheell_BL;
     public WheelCollider BR;
     public WheelCollider BL;
+    public float engineTorque; // = 25f;
 
     void FixedUpdate()
     {
-        moveCar();
+        moveCar();       
         Vector3 deltaPos = transform.position - lastPos;
-        fixedValueSpeed.text = ("Fixed Speed : " + (int)(deltaPos.z / Time.deltaTime * 3.6f));
-		lastPos = transform.position;
-        
+        speed = (int)(deltaPos.z / Time.deltaTime * 3.6f);
+        fixedValueSpeed.text = ("Fixed Speed : " + speed);
+        lastPos = transform.position;
     }
     
     void Update ()
-    {
-        resetPosition();       
+    {      
         accInput();
-        // carEngine();
-        // move forward
-        // Car.GetComponent<Rigidbody>().velocity = Vector3.forward * speed; 
+        brakeCar();
+        resetPosition();
+        carEngineSound();
+        TouchCount();        
+        // print("BR "+ BR.rpm );
+        // print("BL "+ BL.rpm);
     }
-
-   /* void velocityConvert()
-    {
-        // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.magnitude * 3.6f);  
-        float lenghtVector = GetComponent<Rigidbody>().velocity.magnitude;
-        float cov_lenghtVector = lenghtVector * 3.6f;
-        valueSpeed.text = ("Speed : " + (int)cov_lenghtVector);
-    }*/
-
+  
     void accInput()
     {
         Vector3 dir = Vector3.zero;
         dir.x = Input.acceleration.x;
         // Debug text
         dirDebug.text = ("Acc " + dir.x);
-
+        Geartext.text = ("Gear " + (gear + 1));
         // keyboard control editor
         if (Input.GetKey(KeyCode.A))
         {
-            Car.GetComponent<Rigidbody>().AddRelativeForce(-10f * 10f, 0f, 0f);
+            Car.GetComponent<Rigidbody>().AddRelativeForce(-20f * 10f, 0f, 0f);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            Car.GetComponent<Rigidbody>().AddRelativeForce(10f * 10f, 0f, 0f);
+            Car.GetComponent<Rigidbody>().AddRelativeForce(20f * 10f, 0f, 0f);
         }
 
         // turn left & right control
         Car.GetComponent<Rigidbody>().AddRelativeForce(dir.x * 10f, 0f, 0f); 
-        speedControl();
+        // speedControl();
     }
 
     void moveCar()
     {
-        BR.motorTorque =  50*Input.GetAxis("Vertical");
-        BL.motorTorque =  50*Input.GetAxis("Vertical");
+        if (ACC_onTouch == true && (BR.motorTorque + BL.motorTorque)/2 <= engineTorque/gearRatio.Length)
+        {          
+            //BR.motorTorque = 50f;
+            //BL.motorTorque = 50f;
+            BR.motorTorque += engineTorque / gearRatio[gear] * DeleyForce;
+            BL.motorTorque += engineTorque / gearRatio[gear] * DeleyForce;          
+        }
+        else if (ACC_onTouch == false)
+        {
+            BR.motorTorque = 0;
+            BL.motorTorque = 0;
+        }
     }
-
-    public void AccOnTouch_true() { ACC_onTouch = true; }
-    public void AccOnTouch_false() { ACC_onTouch = false; }
-    public void BrakeOnTouch_true() { BRAKE_ontouch = true; }
-    public void BrakeOnTouch_false() { BRAKE_ontouch = false; }
-
+    void brakeCar()
+    {
+        if (BRAKE_ontouch == true)
+        {
+            BR.brakeTorque += 10f;
+            BL.brakeTorque += 10f;           
+        }
+        else if (BRAKE_ontouch == false)
+        {
+            BR.brakeTorque = 0;
+            BL.brakeTorque = 0;
+        }
+    }
+    [HideInInspector]
+    public float DeleyForce;
+    public void AccOnTouch_true()
+    {
+        ACC_onTouch = true;      
+    }
+    public void AccOnTouch_false()
+    {
+        ACC_onTouch = false;
+        DeleyForce = 0f;
+    }
+    public void BrakeOnTouch_true()
+    {
+        BRAKE_ontouch = true;
+        if (speed != 0)
+        {
+            soundEffect[1].Play();
+        }
+    }
+    public void BrakeOnTouch_false() { BRAKE_ontouch = false; }  
+    void TouchCount()
+    {
+        if(ACC_onTouch == true && DeleyForce <= 1f)
+        {
+            DeleyForce = DeleyForce + 0.5f * Time.deltaTime;
+        }
+    }
+    /*
     void speedControl()
     {
         if (ACC_onTouch == true && maxLimit != true) // use button acc
@@ -130,7 +173,8 @@ public class AccelerometerInput : MonoBehaviour
             }
         }else if (ACC_onTouch == false) // release button acc
         {
-                speed = speed - 0.05f;
+            //speed = speed - 0.05f;
+
         }
         // max limit
         if(speed >= 60f ) 
@@ -153,9 +197,13 @@ public class AccelerometerInput : MonoBehaviour
         }
         if(BRAKE_ontouch == true && minLimit != true) // use button brake
         {
-            speed = speed - 0.8f;
+           // speed = speed - 0.8f;
+           BR.brakeTorque = 10;
+           BL.brakeTorque = 10;
+           print("Break");
         }
     }
+    */   
 
     [HideInInspector]
     public float count = 0;
@@ -198,19 +246,19 @@ public class AccelerometerInput : MonoBehaviour
             check = true;
         }
     }
-
-    void carEngine()
+    void carEngineSound()
     {
         for (int i = 0; i < gearRatio.Length; i++)
         {
             if (gearRatio[i] > speed)
             {
-                gear = i;
+                gear = i;                
                 break;
             }
         }
             float Max_gear = 0;
             float Min_gear = 0;
+
             if(gear == 0)
             {
                 Min_gear = 0;
@@ -220,6 +268,14 @@ public class AccelerometerInput : MonoBehaviour
                 Min_gear = gearRatio[gear - 1];
             }
             Max_gear = gearRatio[gear];
-            GetComponent<AudioSource>().pitch = ((speed - Min_gear) / (Max_gear - Min_gear)) + 0.8f;
+        soundEffect[0].pitch = ((speed - Min_gear) / (Max_gear - Min_gear)) + 0.75f;
     }
+
+    /* void velocityConvert()
+   {
+       // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.magnitude * 3.6f);  
+       float lenghtVector = GetComponent<Rigidbody>().velocity.magnitude;
+       float cov_lenghtVector = lenghtVector * 3.6f;
+       valueSpeed.text = ("Speed : " + (int)cov_lenghtVector);
+   }*/
 }
