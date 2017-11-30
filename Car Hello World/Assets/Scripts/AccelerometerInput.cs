@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+internal enum GearType
+{
+        Four_Gears,
+        Five_Gears,
+        Six_Gears
+}
+
 public class AccelerometerInput : MonoBehaviour
 {
     public GameObject Car;
@@ -26,6 +33,7 @@ public class AccelerometerInput : MonoBehaviour
     [Space(10)]
     public float[] gearRatio;
     public int gear;
+    [SerializeField] private GearType m_GearType = GearType.Four_Gears;
     public Rigidbody rb;
     public Vector3 temp;
     public AudioSource[] soundEffect;
@@ -35,6 +43,7 @@ public class AccelerometerInput : MonoBehaviour
         Car = this.gameObject;
         rb = Car.GetComponent<Rigidbody>();
         rb.centerOfMass = new Vector3(0, -1, -25);
+        ApplyGear();
         /*temp = rb.centerOfMass;
         temp.x = 0f;
         temp.y = -0.8f;
@@ -57,16 +66,18 @@ public class AccelerometerInput : MonoBehaviour
         fixedValueSpeed.text = ("Fixed Speed : " + speed);
         lastPos = transform.position;
     }
-    
+    public float engineRPM;
     void Update ()
-    {      
+    {
+        ApplyGear();
         accInput();
         brakeCar();
         resetPosition();
         carEngineSound();
-        TouchCount();        
+        TouchCount();
         // print("BR "+ BR.rpm );
         // print("BL "+ BL.rpm);
+        engineRPM = (engineTorque / 4) - 3.5f;      
     }
   
     void accInput()
@@ -87,18 +98,22 @@ public class AccelerometerInput : MonoBehaviour
         }
 
         // turn left & right control
-        Car.GetComponent<Rigidbody>().AddRelativeForce(dir.x * 10f, 0f, 0f); 
+        if (speed != 0 && speed >= 10 )
+        {
+            Car.GetComponent<Rigidbody>().AddRelativeForce(dir.x * 500f, 0f, 0f);
+        }
         // speedControl();
     }
 
+    public float m_time;
     void moveCar()
-    {
-        if (ACC_onTouch == true && (BR.motorTorque + BL.motorTorque)/2 <= engineTorque/gearRatio.Length)
-        {          
+    {     
+        if (ACC_onTouch == true && (BR.motorTorque + BL.motorTorque)/2 <= engineRPM)
+        {
             //BR.motorTorque = 50f;
-            //BL.motorTorque = 50f;
-            BR.motorTorque += engineTorque / gearRatio[gear] * DeleyForce;
-            BL.motorTorque += engineTorque / gearRatio[gear] * DeleyForce;          
+            //BL.motorTorque = 50f;            
+            BR.motorTorque += (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);
+            BL.motorTorque += (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);   
         }
         else if (ACC_onTouch == false)
         {
@@ -119,6 +134,41 @@ public class AccelerometerInput : MonoBehaviour
             BL.brakeTorque = 0;
         }
     }
+
+    void ApplyGear()
+    {
+        switch (m_GearType)
+        {
+            case GearType.Four_Gears :
+                gearRatio = new float[4];
+
+                gearRatio[0] = 30;
+                gearRatio[1] = 60;
+                gearRatio[2] = 90;
+                gearRatio[3] = 120;
+                break;
+            case GearType.Five_Gears :
+                gearRatio = new float[5];
+
+                gearRatio[0] = 30;
+                gearRatio[1] = 60;
+                gearRatio[2] = 90;
+                gearRatio[3] = 120;
+                gearRatio[4] = 150;
+                break;
+            case GearType.Six_Gears :
+                gearRatio = new float[6];
+
+                gearRatio[0] = 30;
+                gearRatio[1] = 60;
+                gearRatio[2] = 90;
+                gearRatio[3] = 120;
+                gearRatio[4] = 150;
+                gearRatio[5] = 180;
+                break;
+        }
+    }
+
     [HideInInspector]
     public float DeleyForce;
     public void AccOnTouch_true()
@@ -146,6 +196,7 @@ public class AccelerometerInput : MonoBehaviour
             DeleyForce = DeleyForce + 0.5f * Time.deltaTime;
         }
     }
+
     /*
     void speedControl()
     {
@@ -268,7 +319,7 @@ public class AccelerometerInput : MonoBehaviour
                 Min_gear = gearRatio[gear - 1];
             }
             Max_gear = gearRatio[gear];
-        soundEffect[0].pitch = ((speed - Min_gear) / (Max_gear - Min_gear)) + 0.75f;
+        soundEffect[0].pitch = ((speed - Min_gear) / (Max_gear - Min_gear)) + 0.7f;
     }
 
     /* void velocityConvert()

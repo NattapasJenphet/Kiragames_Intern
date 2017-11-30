@@ -1818,12 +1818,9 @@ MonoBehaviour:
   Geartext: {fileID: 513733027}
   currentPos: {x: 0, y: 0, z: 0}
   lastPos: {x: 0, y: 0, z: 0}
-  gearRatio:
-  - 50
-  - 100
-  - 150
-  - 200
+  gearRatio: []
   gear: 0
+  m_GearType: 0
   rb: {fileID: 0}
   temp: {x: 0, y: 0, z: 0}
   soundEffect:
@@ -1834,6 +1831,9 @@ MonoBehaviour:
   BR: {fileID: 269530174}
   BL: {fileID: 266173177}
   engineTorque: 200
+  engineRPM: 0
+  TopSpeed: 200
+  m_time: 0.5
   DeleyForce: 0
   count: 0
   n_count: 0
@@ -1925,7 +1925,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9a28ac833c0745e48be8624b2a549ec5, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
