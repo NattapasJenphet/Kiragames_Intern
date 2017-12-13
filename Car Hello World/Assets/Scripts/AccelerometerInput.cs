@@ -39,8 +39,7 @@ public class AccelerometerInput : MonoBehaviour
     public AudioSource[] soundEffect;
 
     void Start ()
-	{
-        Car = this.gameObject;
+	{       
         rb = Car.GetComponent<Rigidbody>();
         rb.centerOfMass = new Vector3(0, -1, -25);
         ApplyGear();
@@ -56,6 +55,7 @@ public class AccelerometerInput : MonoBehaviour
     public GameObject wheell_BL;
     public WheelCollider BR;
     public WheelCollider BL;
+    public GameObject[] WheelRotate;
     public float engineTorque; // = 25f;
 
     void FixedUpdate()
@@ -75,6 +75,10 @@ public class AccelerometerInput : MonoBehaviour
         resetPosition();
         carEngineSound();
         TouchCount();
+        WheelRotate[0].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        WheelRotate[1].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        WheelRotate[2].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        WheelRotate[3].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         // print("BR "+ BR.rpm );
         // print("BL "+ BL.rpm);
         engineRPM = (engineTorque / 4) - 3.5f;      
