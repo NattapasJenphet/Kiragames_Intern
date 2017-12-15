@@ -35,24 +35,16 @@ public class AccelerometerInput : MonoBehaviour
     public int gear;
     [SerializeField] private GearType m_GearType = GearType.Four_Gears;
     public Rigidbody rb;
-    public Vector3 temp;
     public AudioSource[] soundEffect;
 
     void Start ()
 	{       
         rb = Car.GetComponent<Rigidbody>();
-        rb.centerOfMass = new Vector3(0, -1, -25);
-        ApplyGear();
-        /*temp = rb.centerOfMass;
-        temp.x = 0f;
-        temp.y = -0.8f;
-        temp.z = 0f;
-        rb.centerOfMass = temp;*/
+        rb.centerOfMass = new Vector3(0f, -0.25f, 0f);
+        ApplyGear();   
     }
 
     [Space(10)]
-    public GameObject wheel_BR;
-    public GameObject wheell_BL;
     public WheelCollider BR;
     public WheelCollider BL;
     public GameObject[] WheelRotate;
@@ -62,11 +54,11 @@ public class AccelerometerInput : MonoBehaviour
     {
         moveCar();       
         Vector3 deltaPos = transform.position - lastPos;
-        speed = (int)(deltaPos.z / Time.deltaTime * 3.6f);
+        speed = (int)(deltaPos.z / Time.deltaTime * 3.6f);       
         fixedValueSpeed.text = ("Fixed Speed : " + speed);
         lastPos = transform.position;
     }
-    public float engineRPM;
+    
     void Update ()
     {
         ApplyGear();
@@ -78,10 +70,9 @@ public class AccelerometerInput : MonoBehaviour
         WheelRotate[0].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         WheelRotate[1].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         WheelRotate[2].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
-        WheelRotate[3].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
-        // print("BR "+ BR.rpm );
-        // print("BL "+ BL.rpm);
-        engineRPM = (engineTorque / 4) - 3.5f;      
+        WheelRotate[3].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);       
+      
+        print(BR.motorTorque);
     }
   
     void accInput()
@@ -110,16 +101,20 @@ public class AccelerometerInput : MonoBehaviour
     }
 
     public float m_time;
+    public float TopSpeed = 150;
+    public float currentMotorturque;
+ 
     void moveCar()
-    {     
-        if (ACC_onTouch == true && (BR.motorTorque + BL.motorTorque)/2 <= engineRPM)
+    {
+        if (ACC_onTouch == true)    
+        //if (ACC_onTouch == true)
         {
-            //BR.motorTorque = 50f;
-            //BL.motorTorque = 50f;            
-            BR.motorTorque += (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);
-            BL.motorTorque += (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);   
+            BR.motorTorque = currentMotorturque;
+            BL.motorTorque = currentMotorturque;            
+            //BR.motorTorque += (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);
+            //BL.motorTorque += (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);                        
         }
-        else if (ACC_onTouch == false)
+        else if (ACC_onTouch == false || speed > TopSpeed)
         {
             BR.motorTorque = 0;
             BL.motorTorque = 0;
@@ -145,13 +140,13 @@ public class AccelerometerInput : MonoBehaviour
         {
             case GearType.Four_Gears :
                 gearRatio = new float[4];
-
+                
                 gearRatio[0] = 30;
                 gearRatio[1] = 60;
                 gearRatio[2] = 90;
                 gearRatio[3] = 120;
                 break;
-            case GearType.Five_Gears :
+            case GearType.Five_Gears :             
                 gearRatio = new float[5];
 
                 gearRatio[0] = 30;
