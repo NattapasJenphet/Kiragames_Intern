@@ -72,7 +72,7 @@ public class AccelerometerInput : MonoBehaviour
         WheelRotate[2].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         WheelRotate[3].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);       
       
-        print(BR.motorTorque);
+        // print(BR.motorTorque);
     }
   
     void accInput()
