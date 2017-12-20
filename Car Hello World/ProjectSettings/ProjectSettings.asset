@@ -353,7 +353,9 @@ PlayerSettings:
   psp2UseDebugIl2cppLibs: 0
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    2: Directional;Light;(2)
+    7: Directional;Light;(2)
   metroPackageName: Car Hello World
   metroPackageVersion: 
   metroCertificatePath: 

@@ -9,11 +9,14 @@ public class MenuControl : MonoBehaviour {
     public Vector3 CenterScreen;
     GameObject ittle;
     Animator anim;
+    Animator c_anim;
 
 	void Start () {
         ittle = GameObject.Find("Ittle");
         anim = ittle.GetComponent<Animator>();
-	} 
+        c_anim = GetComponent<Animator>();
+
+    } 
 	
 	void Update ()
     {
@@ -28,6 +31,8 @@ public class MenuControl : MonoBehaviour {
         {        
             Invoke("SceneLoad", 1.5f);
             anim.SetBool("Onclick", true);
+            c_anim.SetBool("Onclick", true);
+            Text_tap.SetActive(false);
         }
     }
     void fadeAnim(GameObject mytext)
