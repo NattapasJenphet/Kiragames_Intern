@@ -1,4 +1,8 @@
-﻿Shader "Custom/Toonshader" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/Toonshader" {
 
 	Properties {
     _Color ("Diffuse Material Color", Color) = (1,1,1,1)
@@ -62,10 +66,10 @@
             vertexOutput output;
            
             //normalDirection
-            output.normalDir = normalize ( mul( float4( input.normal, 0.0 ), _World2Object).xyz );
+            output.normalDir = normalize ( mul( float4( input.normal, 0.0 ), unity_WorldToObject).xyz );
            
             //World position
-            float4 posWorld = mul(_Object2World, input.vertex);
+            float4 posWorld = mul(unity_ObjectToWorld, input.vertex);
            
             //view direction
             output.viewDir = normalize( _WorldSpaceCameraPos.xyz - posWorld.xyz ); //vector from object to the camera
@@ -78,7 +82,7 @@
             );
            
             //fragmentInput output;
-            output.pos = mul( UNITY_MATRIX_MVP, input.vertex );  
+            output.pos = UnityObjectToClipPos( input.vertex );  
            
             //UV-Map
             output.uv =input.texcoord;
