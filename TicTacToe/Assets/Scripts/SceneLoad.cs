@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoad : MonoBehaviour {
 
+    public GameObject TapGp;
 	
 	void Start () {
 		
@@ -12,6 +13,7 @@ public class SceneLoad : MonoBehaviour {
 	
 	void Update () {
         Onclick();
+        TapGp.GetComponent<CanvasGroup>().alpha = Mathf.PingPong(Time.time * 3f, 1f);
     }
 
     void Onclick()
