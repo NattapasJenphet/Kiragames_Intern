@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameEvnetManager : MonoBehaviour {
-	
-	void Start () {
-		
-	}
+public class GameEvnetManager : MonoBehaviour {	
 
-	void Update () {
-		
-	}
     public void backtoMenu()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Menu");
-    }
+    } 
 }
