@@ -25,7 +25,7 @@ public class SceneLoad : MonoBehaviour {
         {
             Debug.Log("Loadscene");
             Anim_Canvas.SetBool("Loading", true);
-            Invoke("LoadScene",4);
+            Invoke("LoadScene",2);
         }
     }
 
