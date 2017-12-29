@@ -146,7 +146,7 @@ public class GameController : MonoBehaviour {
             num_ScoreX++;
             ScoreX.text = (num_ScoreX +"");
         }       
-        else
+        else if(winningPlayer == "O")
         {
             num_ScoreO++;
             ScoreO.text = (num_ScoreO +"");
