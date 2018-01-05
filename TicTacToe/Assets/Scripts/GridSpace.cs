@@ -9,7 +9,7 @@ public class GridSpace : MonoBehaviour {
     public Text buttonText;
     public string playerSide;
     private GameController gameController;
-    public GameObject sc_GameController;
+    public GameObject gameControllerObject;
     
 
     public void SetGameControllerReference(GameController controller)
@@ -21,7 +21,7 @@ public class GridSpace : MonoBehaviour {
     {
         buttonText.text = gameController.GetPlayerSide();      
         button.interactable = false;
-        if (sc_GameController.GetComponent<GameController>().playerSide == "O")
+        if (gameControllerObject.GetComponent<GameController>().playerSide == "O")
         {
 
             this.buttonText.GetComponent<Text>().color = new Color(0.83f, 0.27f, 0.39f);

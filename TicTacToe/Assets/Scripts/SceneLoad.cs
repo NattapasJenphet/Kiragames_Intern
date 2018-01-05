@@ -5,18 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoad : MonoBehaviour {
 
-    public GameObject TapGp;
-    private Animator Anim_Canvas;
+    public GameObject tapText;
+    private Animator animatorController;
 
     void Awake()
     {
-        Anim_Canvas = gameObject.GetComponent<Animator>();
+        animatorController = gameObject.GetComponent<Animator>();
     }
 
     void Update ()
     {        
-        Onclick();     
-        TapGp.GetComponent<CanvasGroup>().alpha = Mathf.PingPong(Time.time * 3f, 1f);
+        Onclick();
+        tapText.GetComponent<CanvasGroup>().alpha = Mathf.PingPong(Time.time * 3f, 1f);
     }
 
     void Onclick()
@@ -24,7 +24,7 @@ public class SceneLoad : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Loadscene");
-            Anim_Canvas.SetBool("Loading", true);
+            animatorController.SetBool("loading", true);
             Invoke("LoadScene",2);
         }
     }

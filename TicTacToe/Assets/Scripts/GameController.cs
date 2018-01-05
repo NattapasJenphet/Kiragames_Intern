@@ -30,16 +30,14 @@ public class GameController : MonoBehaviour {
     public PlayerColor inactivePlayerColor;
     public string playerSide;
     public int moveCount;
-    public GameObject startInfo;
+    public GameObject startSetting;
 
     void Awake()
     {
-        SetGameControllerReferenceOnButtons();
-        // playerSide = "X";
+        SetGameControllerReferenceOnButtons();       
         gameOverPanel.SetActive(false);
         moveCount = 0;
-        restartButton.SetActive(false);
-        // SetPlayerColors(playerX, playerO);
+        restartButton.SetActive(false);       
     }
 
     void SetGameControllerReferenceOnButtons()
@@ -123,10 +121,10 @@ public class GameController : MonoBehaviour {
     }
 
     [Space(10)]
-    public Text ScoreX;
-    public Text ScoreO;
-    public int num_ScoreX;
-    public int num_ScoreO;
+    public Text scoreX;
+    public Text scoreO;
+    public int numScoreX;
+    public int numScoreO;
 
     void GameOver(string winningPlayer)
     {
@@ -143,13 +141,13 @@ public class GameController : MonoBehaviour {
 
         if(winningPlayer == "X")
         {
-            num_ScoreX++;
-            ScoreX.text = (num_ScoreX +"");
+            numScoreX++;
+            scoreX.text = (numScoreX +"");
         }       
         else if(winningPlayer == "O")
         {
-            num_ScoreO++;
-            ScoreO.text = (num_ScoreO +"");
+            numScoreO++;
+            scoreO.text = (numScoreO +"");
         }
         restartButton.SetActive(true);
     }
@@ -161,13 +159,11 @@ public class GameController : MonoBehaviour {
     }
 
     public void RestartGame()
-    {
-        // playerSide = "X";
-        startInfo.SetActive(true);
+    {      
+        startSetting.SetActive(true);
         moveCount = 0;
         gameOverPanel.SetActive(false);
-        restartButton.SetActive(false);
-        // SetPlayerColors(playerX, playerO);       
+        restartButton.SetActive(false);            
 
         for (int i = 0; i < buttonList.Length; i++)
         {
@@ -200,7 +196,7 @@ public class GameController : MonoBehaviour {
 
     void StartGame()
     {
-        startInfo.SetActive(false);
+        startSetting.SetActive(false);
         SetBoardInteractable(true);
         SetPlayerButtons(false);
     }
