@@ -26,21 +26,24 @@ public class AccelerometerInput : MonoBehaviour
     public Text dirDebug;
     public Text fixedValueSpeed;
     public Text Geartext;
+
     [HideInInspector]
     public Vector3 currentPos;
     [HideInInspector]
     public Vector3 lastPos;
+
     [Space(10)]
     public float[] gearRatio;
     public int gear;
+
     [SerializeField] private GearType m_GearType = GearType.Four_Gears;
-    public Rigidbody rb;
+    public Rigidbody rigibodyCar;
     public AudioSource[] soundEffect;
 
     void Start ()
-	{       
-        rb = Car.GetComponent<Rigidbody>();
-        rb.centerOfMass = new Vector3(0f, -0.25f, 0f);
+	{
+        rigibodyCar = Car.GetComponent<Rigidbody>();
+        rigibodyCar.centerOfMass = new Vector3(0f, -0.25f, 0f);      
         ApplyGear();   
     }
 
@@ -52,13 +55,14 @@ public class AccelerometerInput : MonoBehaviour
 
     void FixedUpdate()
     {
-        moveCar();       
+        moveCar();
         Vector3 deltaPos = transform.position - lastPos;
         speed = (int)(deltaPos.z / Time.deltaTime * 3.6f);       
         fixedValueSpeed.text = ("Fixed Speed : " + speed);
         lastPos = transform.position;
+        scoreCalculate();
     }
-    
+
     void Update ()
     {
         ApplyGear();
@@ -67,12 +71,13 @@ public class AccelerometerInput : MonoBehaviour
         resetPosition();
         carEngineSound();
         TouchCount();
+
+        // 4 Wheels Rotate 
         WheelRotate[0].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         WheelRotate[1].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         WheelRotate[2].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
-        WheelRotate[3].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);       
-      
-        // print(BR.motorTorque);
+        WheelRotate[3].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        // print(BR.motorTorque);           
     }
   
     void accInput()
@@ -80,7 +85,7 @@ public class AccelerometerInput : MonoBehaviour
         Vector3 dir = Vector3.zero;
         dir.x = Input.acceleration.x;
         // Debug text
-        dirDebug.text = ("Acc " + dir.x);
+        dirDebug.text = ("Distance " + distance);
         Geartext.text = ("Gear " + (gear + 1));
         // keyboard control editor
         if (Input.GetKey(KeyCode.A))
@@ -101,23 +106,22 @@ public class AccelerometerInput : MonoBehaviour
     }
 
     public float m_time;
-    public float TopSpeed = 150;
-    public float currentMotorturque;
+    public float topSpeed = 180f;
  
     void moveCar()
     {
-        if (ACC_onTouch == true)    
+        if (ACC_onTouch == true && speed < topSpeed && (BR.motorTorque + BL.motorTorque) < topSpeed)  
         //if (ACC_onTouch == true)
-        {
-            BR.motorTorque = currentMotorturque;
-            BL.motorTorque = currentMotorturque;            
-            //BR.motorTorque += (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);
-            //BL.motorTorque += (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);                        
+        {                        
+            //BR.motorTorque = (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);
+            //BL.motorTorque = (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);
+            BR.motorTorque += 0.2f;
+            BL.motorTorque += 0.2f;
         }
-        else if (ACC_onTouch == false || speed > TopSpeed)
+        else if (ACC_onTouch == false)
         {
-            BR.motorTorque = 0;
-            BL.motorTorque = 0;
+            BR.motorTorque = 10;
+            BL.motorTorque = 10;
         }
     }
     void brakeCar()
@@ -296,6 +300,7 @@ public class AccelerometerInput : MonoBehaviour
             check = true;
         }
     }
+
     void carEngineSound()
     {
         for (int i = 0; i < gearRatio.Length; i++)
@@ -321,11 +326,14 @@ public class AccelerometerInput : MonoBehaviour
         soundEffect[0].pitch = ((speed - Min_gear) / (Max_gear - Min_gear)) + 0.7f;
     }
 
-    /* void velocityConvert()
-   {
-       // valueSpeed.text = ("Speed : " + GetComponent<Rigidbody>().velocity.magnitude * 3.6f);  
-       float lenghtVector = GetComponent<Rigidbody>().velocity.magnitude;
-       float cov_lenghtVector = lenghtVector * 3.6f;
-       valueSpeed.text = ("Speed : " + (int)cov_lenghtVector);
-   }*/
+    [Header("Score Calculate")]
+    public float distance;
+    private float timeCount;
+    public int rayCountTrigger;
+    // parameter v = speed
+   
+    void scoreCalculate()
+    {
+        distance = timeCount * speed;        
+    }    
 }

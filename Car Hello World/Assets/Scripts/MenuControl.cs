@@ -41,6 +41,6 @@ public class MenuControl : MonoBehaviour {
     }
         void SceneLoad()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Menu");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("GamePlay");
     }
 }
