@@ -50,7 +50,7 @@ using UnityEngine.SceneManagement;
             print("GamePlay");
         }
         else if(newGameState == GameState.gameOver)
-        {
+        {           
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Menu");
             print("GameOver");
         }

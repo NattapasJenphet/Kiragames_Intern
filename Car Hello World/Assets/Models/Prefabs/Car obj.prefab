@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 8228628}
   m_Layer: 0
   m_Name: Car
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 54511840785261032}
   - component: {fileID: 114932912450381368}
   - component: {fileID: 114624801534871122}
+  - component: {fileID: 114199150874154480}
   m_Layer: 0
   m_Name: Car obj
   m_TagString: Player
@@ -296,7 +297,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0.746, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 473244}
@@ -624,8 +625,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.9612706, y: 1, z: 0.96337295}
+  m_Center: {x: -0.0044688312, y: 0, z: 0.0027470058}
 --- !u!81 &8181702
 AudioListener:
   m_ObjectHideFlags: 1
@@ -644,7 +645,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6a2659f54414aa143967d83c0f62a967, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.25
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -724,7 +725,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9a28ac833c0745e48be8624b2a549ec5, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1132,6 +1133,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114199150874154480
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 167626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc28ceca4c7c544ca43b3d3ad1fb9a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentGameState: 1
 --- !u!114 &114624801534871122
 MonoBehaviour:
   m_ObjectHideFlags: 1

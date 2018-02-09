@@ -14,6 +14,7 @@ internal enum GearType
 public class AccelerometerInput : MonoBehaviour
 {
     public GameObject Car;
+    private Animator animCar;
     public float speed;
     // button 
     public bool ACC_onTouch;
@@ -43,8 +44,10 @@ public class AccelerometerInput : MonoBehaviour
     void Start ()
 	{
         rigibodyCar = Car.GetComponent<Rigidbody>();
+        animCar = Car.GetComponent<Animator>();
         rigibodyCar.centerOfMass = new Vector3(0f, -0.25f, 0f);      
-        ApplyGear();   
+        ApplyGear();
+        Invoke("SoundSetting", 0.5f);
     }
 
     [Space(10)]
@@ -64,12 +67,11 @@ public class AccelerometerInput : MonoBehaviour
     }
 
     void Update ()
-    {
+    {      
         ApplyGear();
-        accInput();
-        brakeCar();
-        resetPosition();
-        carEngineSound();
+        SteerInput();
+        brakeCar();       
+        CarEngineSound();
         TouchCount();
 
         // 4 Wheels Rotate 
@@ -80,29 +82,42 @@ public class AccelerometerInput : MonoBehaviour
         // print(BR.motorTorque);           
     }
   
-    void accInput()
+    void SteerInput()
     {
         Vector3 dir = Vector3.zero;
-        dir.x = Input.acceleration.x;
+        dir.x = Input.acceleration.x;      
+        if(dir.x > 0.2)
+        {
+            dir.x = 0.2f;
+            animCar.SetInteger("Animation", 2);
+        }else if(dir.x < -0.2)
+        {
+            dir.x = -0.2f;
+            animCar.SetInteger("Animation", 1);
+        }
+        else if(dir.x < 0.1 && dir.x > -0.1)
+        {
+            animCar.SetInteger("Animation", 0);
+        }
         // Debug text
         dirDebug.text = ("Distance " + distance);
         Geartext.text = ("Gear " + (gear + 1));
         // keyboard control editor
         if (Input.GetKey(KeyCode.A))
         {
-            Car.GetComponent<Rigidbody>().AddRelativeForce(-20f * 10f, 0f, 0f);
+            Car.GetComponent<Rigidbody>().AddRelativeForce(-10f * 10f, 0f, 0f);
+            animCar.SetInteger("Animation", 1);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            Car.GetComponent<Rigidbody>().AddRelativeForce(20f * 10f, 0f, 0f);
+            Car.GetComponent<Rigidbody>().AddRelativeForce(10f * 10f, 0f, 0f);
+            animCar.SetInteger("Animation", 2);
         }
-
         // turn left & right control
         if (speed != 0 && speed >= 10 )
         {
             Car.GetComponent<Rigidbody>().AddRelativeForce(dir.x * 500f, 0f, 0f);
-        }
-        // speedControl();
+        }      
     }
 
     public float m_time;
@@ -124,6 +139,7 @@ public class AccelerometerInput : MonoBehaviour
             BL.motorTorque = 10;
         }
     }
+
     void brakeCar()
     {
         if (BRAKE_ontouch == true)
@@ -174,15 +190,18 @@ public class AccelerometerInput : MonoBehaviour
 
     [HideInInspector]
     public float DeleyForce;
+
     public void AccOnTouch_true()
     {
         ACC_onTouch = true;      
     }
+
     public void AccOnTouch_false()
     {
         ACC_onTouch = false;
         DeleyForce = 0f;
     }
+
     public void BrakeOnTouch_true()
     {
         BRAKE_ontouch = true;
@@ -191,7 +210,18 @@ public class AccelerometerInput : MonoBehaviour
             soundEffect[1].Play();
         }
     }
-    public void BrakeOnTouch_false() { BRAKE_ontouch = false; }  
+
+    public void BrakeOnTouch_false()
+    {
+        BRAKE_ontouch = false;
+    }  
+
+    public void RestartButton()
+    {
+        GameManager.instance.gameOver();
+        Time.timeScale = 1;         
+    }
+
     void TouchCount()
     {
         if(ACC_onTouch == true && DeleyForce <= 1f)
@@ -199,7 +229,12 @@ public class AccelerometerInput : MonoBehaviour
             DeleyForce = DeleyForce + 0.5f * Time.deltaTime;
         }
     }
-
+  
+    void SoundSetting()
+    {        
+        soundEffect[0].volume = 0.05f;
+        soundEffect[1].volume = 0.05f;      
+    }
     /*
     void speedControl()
     {
@@ -270,38 +305,7 @@ public class AccelerometerInput : MonoBehaviour
     [HideInInspector]
     public float newPos;    
 
-    void resetPosition()
-    {
-        oldPos = Car.transform.position.z;
-        count = count + 1 * Time.deltaTime;
-        if (count > 6)
-        {    
-            if (oldPos == newPos)
-            {              
-                n_count = n_count + 1 * Time.deltaTime;
-                if(n_count > 1.5f)
-                {
-                    Car.transform.position = new Vector3(0f, Car.transform.position.y, Car.transform.position.z);
-                    count = 0;
-                    n_count = 0;
-                    check = false;
-                }
-            }
-            else if (oldPos != newPos)
-            {
-                count = 0;
-                n_count = 0;
-                check = false;
-            }
-        }
-        if(count > 4 && check == false)
-        {
-            newPos = Car.transform.position.z;
-            check = true;
-        }
-    }
-
-    void carEngineSound()
+    void CarEngineSound()
     {
         for (int i = 0; i < gearRatio.Length; i++)
         {
@@ -331,7 +335,7 @@ public class AccelerometerInput : MonoBehaviour
     private float timeCount;
     public int rayCountTrigger;
     // parameter v = speed
-   
+
     void scoreCalculate()
     {
         distance = timeCount * speed;        
