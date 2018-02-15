@@ -27,8 +27,8 @@ GameObject:
   - component: {fileID: 6555810}
   - component: {fileID: 2387116}
   m_Layer: 0
-  m_Name: fence (1)
-  m_TagString: Untagged
+  m_Name: Fence Main Tag
+  m_TagString: Fence
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,7 +60,7 @@ GameObject:
   m_Component:
   - component: {fileID: 448406}
   m_Layer: 0
-  m_Name: fence obj (7)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -487,8 +487,8 @@ GameObject:
   - component: {fileID: 6597388}
   - component: {fileID: 2318864}
   m_Layer: 0
-  m_Name: fence
-  m_TagString: Untagged
+  m_Name: Fence Main Tag
+  m_TagString: Fence
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -502,7 +502,7 @@ GameObject:
   m_Component:
   - component: {fileID: 407932}
   m_Layer: 0
-  m_Name: fence obj (3)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -565,7 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 405616}
   m_Layer: 0
-  m_Name: fence obj (1)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -628,7 +628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 410880}
   m_Layer: 0
-  m_Name: fence obj (6)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -696,7 +696,7 @@ GameObject:
   m_Component:
   - component: {fileID: 471626}
   m_Layer: 0
-  m_Name: fence obj (4)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -759,7 +759,7 @@ GameObject:
   m_Component:
   - component: {fileID: 406086}
   m_Layer: 0
-  m_Name: fence obj (5)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -825,7 +825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 491782}
   m_Layer: 0
-  m_Name: fence obj (8)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -903,7 +903,7 @@ GameObject:
   m_Component:
   - component: {fileID: 405980}
   m_Layer: 0
-  m_Name: fence obj (9)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -972,7 +972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 473304}
   m_Layer: 0
-  m_Name: fence obj (2)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1005,7 +1005,7 @@ GameObject:
   m_Component:
   - component: {fileID: 419390}
   m_Layer: 0
-  m_Name: fence obj (10)
+  m_Name: fence obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

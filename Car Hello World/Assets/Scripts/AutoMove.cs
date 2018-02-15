@@ -4,20 +4,37 @@ using UnityEngine;
 
 public class AutoMove : MonoBehaviour {
 
-    public float speedValue = 3f;
-    
-	void Update () {
-     
-        transform.Translate(new Vector3(0, 0, 1f * speedValue * Time.deltaTime));    
-        
-        if(transform.position.y < -19f && transform.position.y > -20f)
+    public float speedValue;
+    void Start()
+    {
+        speedValue = 4;
+    }
+
+    void Update ()
+    {      
+        destorySelf();
+        speedControl(speedValue);
+
+    }
+
+    void speedControl(float speedInput)
+    {
+        speedInput = speedValue;
+        //transform.Translate(new Vector3(0, 0, 1f * speedInput * Time.deltaTime));
+        GetComponent<Rigidbody>().MovePosition(transform.position + transform.forward * speedInput * Time.deltaTime);
+    }
+
+    void BehoviorsOfCar() //****
+    {
+
+
+    }
+
+    void destorySelf()
+    {
+        if (transform.position.y < -19f && transform.position.y > -20f)
         {
             Destroy(this.gameObject);
         }
-	}
-
-    void BehoviorsOfCar()
-    {
-
     }
 }

@@ -89,8 +89,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4349334033681014}
-  - component: {fileID: 114559563944902438}
   - component: {fileID: 54897307917874314}
+  - component: {fileID: 114559563944902438}
   m_Layer: 0
   m_Name: Perf_enemy 02
   m_TagString: Blocker
@@ -110,9 +110,12 @@ GameObject:
   - component: {fileID: 23126056862575304}
   - component: {fileID: 95638879431416608}
   - component: {fileID: 65691837706767152}
+  - component: {fileID: 65128538240184150}
+  - component: {fileID: 65460019403428686}
+  - component: {fileID: 65541557593693232}
   m_Layer: 0
   m_Name: enemyCar 02
-  m_TagString: Untagged
+  m_TagString: Blocker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -442,6 +445,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65128538240184150
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1839214004948298}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.043803427, y: 0.022018425, z: 0.06964703}
+  m_Center: {x: -0.000035780515, y: 0.011910407, z: -0.017605944}
+--- !u!65 &65460019403428686
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1839214004948298}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.043803427, y: 0.019319512, z: 0.004941042}
+  m_Center: {x: -0.000035780515, y: 0.01056095, z: 0.020205587}
+--- !u!65 &65541557593693232
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1839214004948298}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.043803427, y: 0.013608329, z: 0.005009421}
+  m_Center: {x: -0.000035780515, y: 0.007705359, z: 0.02545864}
 --- !u!65 &65691837706767152
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -452,8 +491,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.046736974, y: 0.053514116, z: 0.10540733}
-  m_Center: {x: -0.00003578189, y: -0.0038374274, z: 0}
+  m_Size: {x: 0.043803427, y: 0.030219857, z: 0.1040061}
+  m_Center: {x: -0.000035780515, y: -0.015484551, z: -0.0004265061}
 --- !u!95 &95233986968777566
 Animator:
   serializedVersion: 3
