@@ -48,6 +48,7 @@ public class RoadGen : MonoBehaviour {
             }
         }
     }
+
     void CheckCreate()
     {
        if(Create[0] == true && Create[1] == true && Create[2] == true && Create[3] == true && Create[4] == true && covPosCar_division % 5 == 0)

@@ -15,7 +15,7 @@ public class MenuControl : MonoBehaviour {
         ittle = GameObject.Find("Ittle");
         anim = ittle.GetComponent<Animator>();
         c_anim = GetComponent<Animator>();
-
+        Time.timeScale = 1;
     } 
 	
 	void Update ()

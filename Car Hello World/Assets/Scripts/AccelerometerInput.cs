@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 internal enum GearType
 {
-        Four_Gears,
-        Five_Gears,
-        Six_Gears
+    Four_Gears,
+    Five_Gears,
+    Six_Gears
 }
 
 public class AccelerometerInput : MonoBehaviour
@@ -27,11 +27,13 @@ public class AccelerometerInput : MonoBehaviour
     public Text dirDebug;
     public Text fixedValueSpeed;
     public Text Geartext;
+    public Text timeMonitorText;
+    public float timeMonitor;
 
     [HideInInspector]
-    public Vector3 currentPos;
+    public Vector3 currentPosition;
     [HideInInspector]
-    public Vector3 lastPos;
+    public Vector3 lastPosition;
 
     [Space(10)]
     public float[] gearRatio;
@@ -40,14 +42,16 @@ public class AccelerometerInput : MonoBehaviour
     [SerializeField] private GearType m_GearType = GearType.Four_Gears;
     public Rigidbody rigibodyCar;
     public AudioSource[] soundEffect;
+    public float pitchRandom;
 
-    void Start ()
-	{
+    void Start()
+    {
+        StartCoroutine(SoundSetting(false, 0.5f));
         rigibodyCar = Car.GetComponent<Rigidbody>();
         animCar = Car.GetComponent<Animator>();
-        rigibodyCar.centerOfMass = new Vector3(0f, -0.25f, 0f);      
+        rigibodyCar.centerOfMass = new Vector3(0f, -0.25f, 0f);
+        n_lastPosition = transform.position;
         ApplyGear();
-        Invoke("SoundSetting", 0.5f);
     }
 
     [Space(10)]
@@ -59,49 +63,60 @@ public class AccelerometerInput : MonoBehaviour
     void FixedUpdate()
     {
         moveCar();
-        Vector3 deltaPos = transform.position - lastPos;
-        speed = (int)(deltaPos.z / Time.deltaTime * 3.6f);       
-        fixedValueSpeed.text = ("Fixed Speed : " + speed);
-        lastPos = transform.position;
-        scoreCalculate();
+        Vector3 deltaPos = transform.position - lastPosition;
+        speed = (int)(deltaPos.z / Time.deltaTime * 3.6f);
+        fixedValueSpeed.text = ("SPEED :  " + speed);
+        lastPosition = transform.position;
     }
 
-    void Update ()
-    {      
+    void Update()
+    {
+        pitchRandom = Random.Range(-0.2f, 0.2f);
+        timeMonitor += Time.deltaTime;
+        float twoDecimal = Mathf.Round(timeMonitor * 100f);
+        timeMonitorText.text = ("TIME " + twoDecimal / 100f);
+
         ApplyGear();
         SteerInput();
-        brakeCar();       
+        brakeCar();
         CarEngineSound();
         TouchCount();
+        distanceCalculate();
 
         // 4 Wheels Rotate 
         WheelRotate[0].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         WheelRotate[1].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         WheelRotate[2].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         WheelRotate[3].transform.Rotate(BR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
-        // print(BR.motorTorque);           
+
+        if (animCar.GetBool("Crash") == true)
+        {
+            StartCoroutine(SoundSetting(true, 0.8f));
+        }
     }
-  
+
     void SteerInput()
     {
         Vector3 dir = Vector3.zero;
-        dir.x = Input.acceleration.x;      
-        if(dir.x > 0.2)
+        dir.x = Input.acceleration.x;
+        if (dir.x > 0.2)
         {
             dir.x = 0.2f;
             animCar.SetInteger("Animation", 2);
-        }else if(dir.x < -0.2)
+        }
+        else if (dir.x < -0.2)
         {
             dir.x = -0.2f;
             animCar.SetInteger("Animation", 1);
         }
-        else if(dir.x < 0.1 && dir.x > -0.1)
+        else if (dir.x < 0.1 && dir.x > -0.1)
         {
             animCar.SetInteger("Animation", 0);
         }
         // Debug text
-        dirDebug.text = ("Distance " + distance);
-        Geartext.text = ("Gear " + (gear + 1));
+        float distanceMonitor = Mathf.Round(distanceTravelled);
+        dirDebug.text = ("DISTANCE :  " + distanceMonitor / 100 + "  Km");
+        Geartext.text = ("GEAR :  " + (gear + 1)); // Cut
         // keyboard control editor
         if (Input.GetKey(KeyCode.A))
         {
@@ -114,20 +129,20 @@ public class AccelerometerInput : MonoBehaviour
             animCar.SetInteger("Animation", 2);
         }
         // turn left & right control
-        if (speed != 0 && speed >= 10 )
+        if (speed != 0 && speed >= 10)
         {
             Car.GetComponent<Rigidbody>().AddRelativeForce(dir.x * 500f, 0f, 0f);
-        }      
+        }
     }
 
     public float m_time;
     public float topSpeed = 180f;
- 
+
     void moveCar()
     {
-        if (ACC_onTouch == true && speed < topSpeed && (BR.motorTorque + BL.motorTorque) < topSpeed)  
+        if (ACC_onTouch == true && speed < topSpeed && (BR.motorTorque + BL.motorTorque) < topSpeed)
         //if (ACC_onTouch == true)
-        {                        
+        {
             //BR.motorTorque = (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);
             //BL.motorTorque = (engineTorque / gearRatio[gear] * DeleyForce) / (m_time * 2);
             BR.motorTorque += 0.2f;
@@ -144,8 +159,14 @@ public class AccelerometerInput : MonoBehaviour
     {
         if (BRAKE_ontouch == true)
         {
-            BR.brakeTorque += 10f;
-            BL.brakeTorque += 10f;           
+            BR.brakeTorque += 5f;
+            BL.brakeTorque += 5f;
+
+            if(BR.brakeTorque > 5)
+            {
+                BR.brakeTorque = 5;
+                BL.brakeTorque = 5;
+            }
         }
         else if (BRAKE_ontouch == false)
         {
@@ -158,15 +179,15 @@ public class AccelerometerInput : MonoBehaviour
     {
         switch (m_GearType)
         {
-            case GearType.Four_Gears :
+            case GearType.Four_Gears:
                 gearRatio = new float[4];
-                
+
                 gearRatio[0] = 30;
                 gearRatio[1] = 60;
                 gearRatio[2] = 90;
                 gearRatio[3] = 120;
                 break;
-            case GearType.Five_Gears :             
+            case GearType.Five_Gears:
                 gearRatio = new float[5];
 
                 gearRatio[0] = 30;
@@ -175,7 +196,7 @@ public class AccelerometerInput : MonoBehaviour
                 gearRatio[3] = 120;
                 gearRatio[4] = 150;
                 break;
-            case GearType.Six_Gears :
+            case GearType.Six_Gears:
                 gearRatio = new float[6];
 
                 gearRatio[0] = 30;
@@ -193,7 +214,7 @@ public class AccelerometerInput : MonoBehaviour
 
     public void AccOnTouch_true()
     {
-        ACC_onTouch = true;      
+        ACC_onTouch = true;
     }
 
     public void AccOnTouch_false()
@@ -214,26 +235,38 @@ public class AccelerometerInput : MonoBehaviour
     public void BrakeOnTouch_false()
     {
         BRAKE_ontouch = false;
-    }  
+    }
 
     public void RestartButton()
     {
         GameManager.instance.gameOver();
-        Time.timeScale = 1;         
-    }
+    }  
 
     void TouchCount()
     {
-        if(ACC_onTouch == true && DeleyForce <= 1f)
+        if (ACC_onTouch == true && DeleyForce <= 1f)
         {
             DeleyForce = DeleyForce + 0.5f * Time.deltaTime;
         }
     }
-  
-    void SoundSetting()
-    {        
-        soundEffect[0].volume = 0.05f;
-        soundEffect[1].volume = 0.05f;      
+
+    public IEnumerator SoundSetting(bool Mute, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        switch (Mute)
+        {
+            case false:
+                soundEffect[0].volume = 0.05f;
+                soundEffect[1].volume = 0.05f;
+                break;
+            case true:
+                soundEffect[0].volume = 0f;
+                soundEffect[1].volume = 0f;
+                break;
+            default:
+                print("Error Case");
+                break;
+        }
     }
     /*
     void speedControl()
@@ -292,7 +325,7 @@ public class AccelerometerInput : MonoBehaviour
            print("Break");
         }
     }
-    */   
+    */
 
     [HideInInspector]
     public float count = 0;
@@ -303,7 +336,7 @@ public class AccelerometerInput : MonoBehaviour
     [HideInInspector]
     public float oldPos;
     [HideInInspector]
-    public float newPos;    
+    public float newPos;
 
     void CarEngineSound()
     {
@@ -311,33 +344,52 @@ public class AccelerometerInput : MonoBehaviour
         {
             if (gearRatio[i] > speed)
             {
-                gear = i;                
+                gear = i;
                 break;
             }
         }
-            float Max_gear = 0;
-            float Min_gear = 0;
+        float Max_gear = 0;
+        float Min_gear = 0;
 
-            if(gear == 0)
-            {
-                Min_gear = 0;
-            }
-            else
-            {
-                Min_gear = gearRatio[gear - 1];
-            }
-            Max_gear = gearRatio[gear];
+        if (gear == 0)
+        {
+            Min_gear = 0;
+        }
+        else
+        {
+            Min_gear = gearRatio[gear - 1];
+        }
+        Max_gear = gearRatio[gear];
         soundEffect[0].pitch = ((speed - Min_gear) / (Max_gear - Min_gear)) + 0.7f;
     }
 
     [Header("Score Calculate")]
-    public float distance;
+    public Vector3 n_lastPosition;
+    public float distanceTravelled;
     private float timeCount;
     public int rayCountTrigger;
-    // parameter v = speed
-
-    void scoreCalculate()
+    public Text scoreMonitoring;
+    public bool colliderCheck;
+    void distanceCalculate()
     {
-        distance = timeCount * speed;        
-    }    
+        distanceTravelled += Vector3.Distance(transform.position, n_lastPosition);
+        n_lastPosition = transform.position;
+        scoreMonitoring.text = (" " + (int)distanceTravelled);
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == ("Fence"))
+        {
+            colliderCheck = true;
+            soundEffect[2].pitch += pitchRandom;
+            soundEffect[2].Play();
+        }
+    }
+
+    public void OnCollisionExit(Collision collision)
+    {
+        colliderCheck = false;
+        soundEffect[2].pitch = 1;
+    }
 }
