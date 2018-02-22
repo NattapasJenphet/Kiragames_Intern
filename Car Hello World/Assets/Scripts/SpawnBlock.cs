@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawnBlock : MonoBehaviour
 {
-
     public GameObject[] Blocker;
     public GameObject carPlayer;
     public int numberRandomCar;
@@ -13,6 +12,7 @@ public class SpawnBlock : MonoBehaviour
     public float timeCount;
     public int rayCount;
     public bool[] CreateCar;
+
     void Start()
     {
         carPlayer = GameObject.FindWithTag("Player");
@@ -31,16 +31,16 @@ public class SpawnBlock : MonoBehaviour
 
     void Update()
     {
-        rayCount = carPlayer.GetComponent<AccelerometerInput>().rayCountTrigger;
+        rayCount = carPlayer.GetComponent<CoreGameController>().rayCountTrigger;
         timeCount += 1 * Time.deltaTime;
         LevelControl();
     }
 
     void LevelControl()
     {
-        float distance = carPlayer.GetComponent<AccelerometerInput>().distanceTravelled;
+        float distance = carPlayer.GetComponent<CoreGameController>().distanceTravelled;
 
-        if (distance > 300 && carPlayer.GetComponent<AccelerometerInput>().ACC_onTouch == true)
+        if (distance > 300 && carPlayer.GetComponent<CoreGameController>().ACC_onTouch == true)
         {
             print("HARD CAR");
             SpawnCar(1, "SpawnOneCar");
@@ -55,14 +55,14 @@ public class SpawnBlock : MonoBehaviour
         {
             if (rayCount % 3 == 1 && CreateCar[0] == false)
             {
-                SpawnTwoCar();
+                SpawnTwoCar();               
                 StartCoroutine(ResetCreate(0, 3));
             }
 
             if (rayCount % 5 == 0 && CreateCar[1] == false)
             {
                 SpawnThreeCar();
-                StartCoroutine(ResetCreate(1, 5));
+                StartCoroutine(ResetCreate(1, 5));               
             }
         }
         else if (distance > 300 && distance < 1000)

@@ -20,7 +20,7 @@ public class CameraStable : MonoBehaviour
 
     void Update()
     {
-        accButtonStatus = CarPlayer.GetComponent<AccelerometerInput>().ACC_onTouch;
+        accButtonStatus = CarPlayer.GetComponent<CoreGameController>().ACC_onTouch;
         dieStatus = CarPlayer.GetComponent<Animator>().GetBool("Crash");
         myCamera = GetComponent<Animator>();
         transform.eulerAngles = new Vector3(carX, carY, carZ);
@@ -39,11 +39,11 @@ public class CameraStable : MonoBehaviour
             lenghtCamera = Mathf.Lerp(lenghtCamera, -1.3f, 4f * Time.deltaTime);
         }
 
-        if (CarPlayer.GetComponent<AccelerometerInput>().colliderCheck == true)
+        if (CarPlayer.GetComponent<CoreGameController>().colliderCheck == true)
         {
             myCamera.SetBool("Shake", true);
         }
-        else if (CarPlayer.GetComponent<AccelerometerInput>().colliderCheck == false)
+        else if (CarPlayer.GetComponent<CoreGameController>().colliderCheck == false)
         {
             myCamera.SetBool("Shake", false);
         }
