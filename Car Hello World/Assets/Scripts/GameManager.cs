@@ -25,6 +25,7 @@ using UnityEngine.SceneManagement;
 	
         public void StartGame()
     {
+        Time.timeScale = 1;
         SetGameState(GameState.gamePlay);
     }
         public void gameOver()
@@ -46,6 +47,7 @@ using UnityEngine.SceneManagement;
         }
         else if(newGameState == GameState.gamePlay)
         {
+            Time.timeScale = 1;
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("GamePlay");
             print("GamePlay");
         }

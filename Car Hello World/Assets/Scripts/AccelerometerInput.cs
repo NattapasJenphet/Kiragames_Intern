@@ -17,6 +17,7 @@ public class AccelerometerInput : MonoBehaviour
     private Animator animCar;
     public float speed;
     // button 
+    public GameObject pauseCanvas;
     public bool ACC_onTouch;
     public bool BRAKE_ontouch;
     public bool maxLimit;
@@ -59,10 +60,12 @@ public class AccelerometerInput : MonoBehaviour
     public WheelCollider BL;
     public GameObject[] WheelRotate;
     public float engineTorque; // = 25f;
+    public float topSpeed = 180f;
+    public float DeleyForce;
 
     void FixedUpdate()
     {
-        moveCar();
+        MoveCar();
         Vector3 deltaPos = transform.position - lastPosition;
         speed = (int)(deltaPos.z / Time.deltaTime * 3.6f);
         fixedValueSpeed.text = ("SPEED :  " + speed);
@@ -78,10 +81,10 @@ public class AccelerometerInput : MonoBehaviour
 
         ApplyGear();
         SteerInput();
-        brakeCar();
+        BrakeCar();
         CarEngineSound();
         TouchCount();
-        distanceCalculate();
+        DistanceCalculate();
 
         // 4 Wheels Rotate 
         WheelRotate[0].transform.Rotate(BL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
@@ -115,7 +118,7 @@ public class AccelerometerInput : MonoBehaviour
         }
         // Debug text
         float distanceMonitor = Mathf.Round(distanceTravelled);
-        dirDebug.text = ("DISTANCE :  " + distanceMonitor / 100 + "  Km");
+        dirDebug.text = ("DISTANCE : " + distanceMonitor / 100);
         Geartext.text = ("GEAR :  " + (gear + 1)); // Cut
         // keyboard control editor
         if (Input.GetKey(KeyCode.A))
@@ -135,10 +138,7 @@ public class AccelerometerInput : MonoBehaviour
         }
     }
 
-    public float m_time;
-    public float topSpeed = 180f;
-
-    void moveCar()
+    void MoveCar()
     {
         if (ACC_onTouch == true && speed < topSpeed && (BR.motorTorque + BL.motorTorque) < topSpeed)
         //if (ACC_onTouch == true)
@@ -155,14 +155,14 @@ public class AccelerometerInput : MonoBehaviour
         }
     }
 
-    void brakeCar()
+    void BrakeCar()
     {
         if (BRAKE_ontouch == true)
         {
             BR.brakeTorque += 5f;
             BL.brakeTorque += 5f;
 
-            if(BR.brakeTorque > 5)
+            if (BR.brakeTorque > 5)
             {
                 BR.brakeTorque = 5;
                 BL.brakeTorque = 5;
@@ -209,14 +209,10 @@ public class AccelerometerInput : MonoBehaviour
         }
     }
 
-    [HideInInspector]
-    public float DeleyForce;
-
     public void AccOnTouch_true()
     {
         ACC_onTouch = true;
     }
-
     public void AccOnTouch_false()
     {
         ACC_onTouch = false;
@@ -231,7 +227,6 @@ public class AccelerometerInput : MonoBehaviour
             soundEffect[1].Play();
         }
     }
-
     public void BrakeOnTouch_false()
     {
         BRAKE_ontouch = false;
@@ -240,7 +235,35 @@ public class AccelerometerInput : MonoBehaviour
     public void RestartButton()
     {
         GameManager.instance.gameOver();
-    }  
+    }
+
+    public void PauseButton()
+    {
+        if (Input.GetMouseButtonDown(0) && Time.timeScale != 0)
+        {
+            for (int i = 0; i < soundEffect.Length; i++)
+            {
+                soundEffect[i].enabled = false;
+            }
+            pauseCanvas.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else
+        if (Input.GetMouseButtonDown(0) && Time.timeScale == 0)
+        {
+            for (int i = 0; i < soundEffect.Length; i++)
+            {
+                soundEffect[i].enabled = true;
+            }
+            pauseCanvas.SetActive(false);
+            Time.timeScale = 1;
+        }
+    }
+
+    public void ExitButton()
+    {
+        Application.Quit();
+    }
 
     void TouchCount()
     {
@@ -268,75 +291,6 @@ public class AccelerometerInput : MonoBehaviour
                 break;
         }
     }
-    /*
-    void speedControl()
-    {
-        if (ACC_onTouch == true && maxLimit != true) // use button acc
-        {
-            if (speed <= 20) // 0 - 20
-            {
-                speed = speed + 0.1f;        
-                // print("G 1");
-            }
-            else if (speed >= 20 && speed <= 52) // 20 - 52
-            {
-                speed = speed + 0.05f;
-                // print("G 2");
-            }
-            else if (speed >= 52 && speed <= 57) // 52 - 57
-            {
-                speed = speed + 0.005f;
-                // print("G 3");
-            }
-            else if (speed >= 57) // 57+
-            {
-                speed = speed + 0.001f;
-                // print("G 4");
-            }
-        }else if (ACC_onTouch == false) // release button acc
-        {
-            //speed = speed - 0.05f;
-
-        }
-        // max limit
-        if(speed >= 60f ) 
-        {
-            maxLimit = true;
-            speed = 60f;
-
-        }else if(speed <= 60f )
-        {
-            maxLimit = false;
-        }
-        // min limit
-        if (speed <= 5.6f)
-        {
-            minLimit = true;
-            speed = 5.6f;
-        }else if (speed >= 5.6f)
-        {
-            minLimit = false;
-        }
-        if(BRAKE_ontouch == true && minLimit != true) // use button brake
-        {
-           // speed = speed - 0.8f;
-           BR.brakeTorque = 10;
-           BL.brakeTorque = 10;
-           print("Break");
-        }
-    }
-    */
-
-    [HideInInspector]
-    public float count = 0;
-    [HideInInspector]
-    public float n_count = 0;
-    [HideInInspector]
-    public bool check = false;
-    [HideInInspector]
-    public float oldPos;
-    [HideInInspector]
-    public float newPos;
 
     void CarEngineSound()
     {
@@ -370,7 +324,8 @@ public class AccelerometerInput : MonoBehaviour
     public int rayCountTrigger;
     public Text scoreMonitoring;
     public bool colliderCheck;
-    void distanceCalculate()
+
+    void DistanceCalculate()
     {
         distanceTravelled += Vector3.Distance(transform.position, n_lastPosition);
         n_lastPosition = transform.position;

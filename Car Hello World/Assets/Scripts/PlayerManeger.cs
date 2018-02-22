@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerManeger : MonoBehaviour {
     
     public static PlayerManeger instance;
-    public GameObject gameOverCanvas;   
+    public GameObject gameOverCanvas;
 
     void Awake()
     {
@@ -17,8 +17,8 @@ public class PlayerManeger : MonoBehaviour {
         if(collision.gameObject.tag == "Blocker")
         {            
             GetComponent<Animator>().SetBool("Crash", true);
-            GetComponent<AccelerometerInput>().soundEffect[2].Play();           
-            GetComponent<AccelerometerInput>().colliderCheck = true;
+            GetComponent<CoreGameController>().soundEffect[2].Play();           
+            GetComponent<CoreGameController>().colliderCheck = true;
             Invoke("GameOver", 1f);
             print("You lose");
         }
